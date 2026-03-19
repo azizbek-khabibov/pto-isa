@@ -63,7 +63,7 @@ template <Op OpCode>
 PTO_INST void TSYNC();
 
 template <typename... WaitEvents>
-PTO_INST void TSYNC(WaitEvents&... events);
+PTO_INST void TSYNC(WaitEvents &... events);
 ```
 
 ## 约束

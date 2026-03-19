@@ -40,13 +40,14 @@ Synchronous form:
 ```text
 pto.tscatter ins(%src, %idx : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
+
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp`:
 
 ```cpp
 template <typename TileDataD, typename TileDataS, typename TileDataI, typename... WaitEvents>
-PTO_INST RecordEvent TSCATTER(TileDataD& dst, TileDataS& src, TileDataI& indexes, WaitEvents&... events);
+PTO_INST RecordEvent TSCATTER(TileDataD &dst, TileDataS &src, TileDataI &indexes, WaitEvents &... events);
 ```
 
 ## Constraints

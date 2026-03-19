@@ -43,15 +43,15 @@ pto.tstore ins(%src : !pto.tile_buf<...>) outs(%mem : !pto.partition_tensor_view
 ```cpp
 template <typename TileData, typename GlobalData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE(GlobalData& dst, TileData& src, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE(GlobalData &dst, TileData &src, WaitEvents &... events);
 
 template <typename TileData, typename GlobalData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE(GlobalData& dst, TileData& src, uint64_t preQuantScalar, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE(GlobalData &dst, TileData &src, uint64_t preQuantScalar, WaitEvents &... events);
 
 template <typename TileData, typename GlobalData, typename FpTileData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE_FP(GlobalData& dst, TileData& src, FpTileData& fp, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE_FP(GlobalData &dst, TileData &src, FpTileData &fp, WaitEvents &... events);
 ```
 
 在当前 A2/A3 与 A5 后端上，`preQuantScalar` 与 `TSTORE_FP` 量化存储重载仅对 `TileType::Acc` 合法；它们不提供原生的 Vec Tile 量化存储契约。
@@ -85,7 +85,7 @@ PTO_INST RecordEvent TSTORE_FP(GlobalData& dst, TileData& src, FpTileData& fp, W
     - 不使用量化时，目标数据类型必须是 `__gm__ int32_t/float/half/bfloat16_t`。
     - 静态形状约束与 A2A3 对于行/列的约束相同；`AtomicAdd` 额外限制目标数据类型为支持的原子类型。
 - **有效区域**:
-  - 实现使用 `src.GetValidRow()` / `src.GetValidCol()` 作为传输大小.
+  - 实现使用 `src.GetValidRow()` / `src.GetValidCol()` 作为传输大小。
 
 ## 示例
 

@@ -46,7 +46,7 @@ pto.tscatter ins(%src, %idx : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst 
 
 ```cpp
 template <typename TileDataD, typename TileDataS, typename TileDataI, typename... WaitEvents>
-PTO_INST RecordEvent TSCATTER(TileDataD& dst, TileDataS& src, TileDataI& indexes, WaitEvents&... events);
+PTO_INST RecordEvent TSCATTER(TileDataD &dst, TileDataS &src, TileDataI &indexes, WaitEvents &... events);
 ```
 
 ## 约束
@@ -137,4 +137,3 @@ void example_manual() {
 # IR Level 2 (DPS)
 pto.tscatter ins(%src, %idx : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
-

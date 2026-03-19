@@ -36,6 +36,7 @@ pto.tstore %src, %mem : (!pto.tile<...>, !pto.partition_tensor_view<MxNxdtype>) 
 ```text
 pto.tstore ins(%src : !pto.tile_buf<...>) outs(%mem : !pto.partition_tensor_view<MxNxdtype>)
 ```
+
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp` and `include/pto/common/constants.hpp`:
@@ -43,15 +44,15 @@ Declared in `include/pto/common/pto_instr.hpp` and `include/pto/common/constants
 ```cpp
 template <typename TileData, typename GlobalData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE(GlobalData& dst, TileData& src, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE(GlobalData &dst, TileData &src, WaitEvents &... events);
 
 template <typename TileData, typename GlobalData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE(GlobalData& dst, TileData& src, uint64_t preQuantScalar, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE(GlobalData &dst, TileData &src, uint64_t preQuantScalar, WaitEvents &... events);
 
 template <typename TileData, typename GlobalData, typename FpTileData, AtomicType atomicType = AtomicType::AtomicNone,
           typename... WaitEvents>
-PTO_INST RecordEvent TSTORE_FP(GlobalData& dst, TileData& src, FpTileData& fp, WaitEvents&... events);
+PTO_INST RecordEvent TSTORE_FP(GlobalData &dst, TileData &src, FpTileData &fp, WaitEvents &... events);
 ```
 
 The `preQuantScalar` and `TSTORE_FP` quantized-store overloads are only legal for `TileType::Acc` on current A2/A3 and A5 backends. They do not provide a native vec-tile quantized store contract.

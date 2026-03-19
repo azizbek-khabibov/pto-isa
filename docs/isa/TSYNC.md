@@ -54,6 +54,7 @@ pto.barrier(op)
 In the current PTO-DSL kernel-authoring flow, `record_event` and `wait_event`
 should be treated as low-level TSYNC forms. Front-end kernels should normally
 stay free of explicit event wiring and rely on `ptoas --enable-insert-sync`.
+
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp`:
@@ -63,7 +64,7 @@ template <Op OpCode>
 PTO_INST void TSYNC();
 
 template <typename... WaitEvents>
-PTO_INST void TSYNC(WaitEvents&... events);
+PTO_INST void TSYNC(WaitEvents &... events);
 ```
 
 ## Constraints
