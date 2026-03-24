@@ -36,18 +36,6 @@ Synchronous form:
 ```text
 pto.txor ins(%src0, %src1 : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
-
-### IR Level 1 (SSA)
-
-```text
-%dst = pto.txor %src0, %src1 : (!pto.tile<...>, !pto.tile<...>) -> !pto.tile<...>
-```
-
-### IR Level 2 (DPS)
-
-```text
-pto.txor ins(%src0, %src1 : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
-```
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp`:
@@ -60,10 +48,18 @@ PTO_INST RecordEvent TXOR(TileDataDst &dst, TileDataSrc0 &src0, TileDataSrc1 &sr
 
 ## Constraints
 
-- Intended for integral element types.
 - The op iterates over `dst.GetValidRow()` / `dst.GetValidCol()`.
-- Temporary space is required by A3 for calculation, while not used by A5.
-- For A3, 2 source Tile, destination Tile, temporary space must in different memory range without overlapping.
+- **Implementation checks (A5)**:
+    - `dst`, `src0`, and `src1` element types must match.
+    - Supported element types are `uint8_t`, `int8_t`, `uint16_t`, `int16_t`, `uint32_t`, and `int32_t`.
+    - `dst`, `src0`, and `src1` must be row-major.
+    - `src0.GetValidRow()/GetValidCol()` and `src1.GetValidRow()/GetValidCol()` must match `dst`.
+- **Implementation checks (A2A3)**:
+    - `dst`, `src0`, `src1`, and `tmp` element types must match.
+    - Supported element types are `uint8_t`, `int8_t`, `uint16_t`, and `int16_t`.
+    - `dst`, `src0`, `src1`, and `tmp` must be row-major.
+    - `src0`, `src1`, and `tmp` valid shapes must match `dst`.
+    - In manual mode, `dst`, `src0`, `src1`, and `tmp` must not overlap in memory.
 
 ## Examples
 
@@ -111,3 +107,4 @@ void example() {
 # AS Level 2 (DPS)
 pto.txor ins(%src0, %src1 : !pto.tile_buf<...>, !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
+

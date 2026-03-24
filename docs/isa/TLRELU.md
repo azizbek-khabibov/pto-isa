@@ -36,25 +36,13 @@ Synchronous form:
 ```text
 pto.tlrelu ins(%src, %scalar : !pto.tile_buf<...>, dtype) outs(%dst : !pto.tile_buf<...>)
 ```
-
-### IR Level 1 (SSA)
-
-```text
-%dst = pto.tlrelu %src, %scalar : (!pto.tile<...>, dtype) -> !pto.tile<...>
-```
-
-### IR Level 2 (DPS)
-
-```text
-pto.tlrelu ins(%src, %scalar : !pto.tile_buf<...>, dtype) outs(%dst : !pto.tile_buf<...>)
-```
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp`:
 
 ```cpp
-template <typename TileData, typename... WaitEvents>
-PTO_INST RecordEvent TLRELU(TileData& dst, TileData& src0, typename TileData::DType scalar, WaitEvents&... events);
+template <typename TileDataDst, typename TileDataSrc, typename... WaitEvents>
+PTO_INST RecordEvent TLRELU(TileDataDst& dst, TileDataSrc& src, typename TileDataSrc::DType scalar, WaitEvents&... events);
 ```
 
 ## Constraints
@@ -63,7 +51,7 @@ PTO_INST RecordEvent TLRELU(TileData& dst, TileData& src0, typename TileData::DT
     - `TileData::DType` must be one of: `half`, `float16_t`, `float`, `float32_t` (floating-point types only).
     - Tile layout must be row-major (`TileData::isRowMajor`).
 - **Implementation checks (A5)**:
-    - `TileData::DType` must be one of: `half`, `float16_t`, `float`, `float32_t` (floating-point types only).
+    - `TileData::DType` must be one of: `half`, `float` (floating-point types only).
     - Tile layout must be row-major (`TileData::isRowMajor`).
 - **Common constraints**:
     - Tile location must be vector (`TileData::Loc == TileType::Vec`).
@@ -113,3 +101,4 @@ void example() {
 # AS Level 2 (DPS)
 pto.tlrelu ins(%src, %scalar : !pto.tile_buf<...>, dtype) outs(%dst : !pto.tile_buf<...>)
 ```
+
