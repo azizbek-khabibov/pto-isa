@@ -39,18 +39,6 @@ Lowering may introduce internal scratch tiles; the C++ intrinsic requires an exp
 ```text
 pto.ttrans ins(%src : !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
-
-### IR Level 1 (SSA)
-
-```text
-%dst = pto.ttrans %src : !pto.tile<...> -> !pto.tile<...>
-```
-
-### IR Level 2 (DPS)
-
-```text
-pto.ttrans ins(%src : !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
-```
 ## C++ Intrinsic
 
 Declared in `include/pto/common/pto_instr.hpp`:
@@ -81,6 +69,10 @@ PTO_INST RecordEvent TTRANS(TileDataDst &dst, TileDataSrc &src, TileDataTmp &tmp
     - The implementation operates over the static tile shape (`TileDataSrc::Rows/Cols`) and does not consult `GetValidRow/GetValidCol`.
 - **Temporary tile**:
     - The C++ API requires `tmp`, but some implementations may not use it.
+- **ConvTile**:
+    - Transpose of ConvTile for `TileType::Vec` is supported。 Element size must be `1`、`2` or `4` bytes. Supported element types are `uint32_t`、`int32_t`、`float`、`uint16_t`、`int16_t`、`half`、`bfloat16_t`、`uint8_t`、`int8_t`.
+    - Format transformation from `NCHW` to `NC1HWC0` is supported, while `C1 == (C + C0 - 1)/C0`，HW matches alignment constraint，which means `H*W*sizeof(T)==0`. C0 means `c0_size`, which `C0 * sizeof(T) == 32`。C0 can also be 4.
+    - Format transformation from `NC1HWC0` to `FRACTAL_Z` is supported， while `N1 == (N + N0 - 1)/N0`。N0 should be 16.
 
 ## Examples
 
@@ -149,3 +141,4 @@ void example_manual() {
 # AS Level 2 (DPS)
 pto.ttrans ins(%src : !pto.tile_buf<...>) outs(%dst : !pto.tile_buf<...>)
 ```
+
