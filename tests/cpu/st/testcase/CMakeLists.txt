@@ -121,6 +121,7 @@ treduce
 treshape
 tpushpop
 tpushpop_cv
+tmatmul_layout
 trandom
 thistogram
 timg2col
