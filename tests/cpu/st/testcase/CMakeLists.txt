@@ -123,7 +123,6 @@ ttri
 twait
 treshape
 tpushpop_cv
-tmatmul_layout
 trandom
 thistogram
 timg2col
@@ -131,11 +130,6 @@ tquant
 tisa_coverage
 txor
 txors
-treshape
-trandom
-thistogram
-timg2col
-tquant
 )
 
 foreach(TESTCASE ${ALL_TESTCASES})
