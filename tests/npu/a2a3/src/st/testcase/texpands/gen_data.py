@@ -12,7 +12,9 @@
 
 import os
 import struct
+
 import numpy as np
+
 np.random.seed(19)
 
 PAD_VALUE_NULL = "PAD_VALUE_NULL"
@@ -26,28 +28,27 @@ def gen_golden_data(case_name, param):
     height, width = [param.global_row, param.global_col]
     h_valid, w_valid = [param.valid_row, param.valid_col]
 
+    if np.issubdtype(dtype, np.integer):
+        value_max = np.iinfo(dtype).max
+        value_min = np.iinfo(dtype).min
+    else:
+        value_max = np.finfo(dtype).max
+        value_min = np.finfo(dtype).min
+
     # Generate random input arrays
-    M = 0
-    if dtype == np.int16:
-        M = np.random.randint(-30_000, 30_000, size=[1, 1]).astype(dtype)
-    elif dtype == np.int32:
-        M = np.random.randint(-2_000_000_000, 2_000_000_000, size=[1, 1]).astype(dtype)
-    elif dtype == np.float16:
-        M = np.random.uniform(-8, 8, size=[1, 1]).astype(dtype)
-    elif dtype == np.float32:
-        M = np.random.uniform(-8, 8, size=[1, 1]).astype(dtype)
+    scalar = np.random.uniform(low=value_min, high=value_max, size=[1, 1]).astype(dtype)
 
     with open("scalar.bin", "wb") as f:
-        f.write(struct.pack('f', np.float32(M[0, 0])))
+        f.write(struct.pack("f", np.float32(scalar[0, 0])))
 
-    golden = np.full((height, width), M[0, 0]).astype(dtype)
+    golden = np.full((height, width), scalar[0, 0]).astype(dtype)
 
     output = np.zeros([height, width]).astype(dtype)
     for h in range(height):
         for w in range(width):
             if h >= h_valid or w >= w_valid:
                 golden[h][w] = output[h][w]
-    
+
     # Save the golden data to binary files
     golden.tofile("golden.bin")
 
@@ -56,15 +57,7 @@ def gen_golden_data(case_name, param):
 
 class TestParams:
     def __init__(
-        self, 
-        dtype, 
-        global_row, 
-        global_col, 
-        tile_row, 
-        tile_col, 
-        valid_row, 
-        valid_col, 
-        pad_value_type=PAD_VALUE_NULL
+        self, dtype, global_row, global_col, tile_row, tile_col, valid_row, valid_col, pad_value_type=PAD_VALUE_NULL
     ):
         self.dtype = dtype
         self.global_row = global_row
@@ -75,14 +68,11 @@ class TestParams:
         self.valid_col = valid_col
         self.pad_value_type = pad_value_type
 
+
 def generate_case_name(param):
-    dtype_str = {
-        np.float32: 'float',
-        np.float16: 'half',
-        np.int8: 'int8',
-        np.int32: 'int32',
-        np.int16: 'int16'
-    }[param.dtype]
+    dtype_str = {np.float32: "float", np.float16: "half", np.int8: "int8", np.int32: "int32", np.int16: "int16"}[
+        param.dtype
+    ]
     return (
         f"TEXPANDSTest.case_{dtype_str}_"
         f"{param.global_row}x{param.global_col}_"
@@ -90,6 +80,7 @@ def generate_case_name(param):
         f"{param.valid_row}x{param.valid_col}_"
         f"{param.pad_value_type}"
     )
+
 
 if __name__ == "__main__":
     # Get the absolute path of the script
@@ -105,12 +96,11 @@ if __name__ == "__main__":
         TestParams(np.int32, 64, 64, 64, 64, 64, 64),
         TestParams(np.int16, 64, 64, 64, 64, 64, 64),
         TestParams(np.float16, 64, 64, 64, 64, 64, 64),
-
         TestParams(np.float32, 60, 60, 64, 64, 60, 60, PAD_VALUE_MAX),
         TestParams(np.int32, 60, 60, 64, 64, 60, 60, PAD_VALUE_MAX),
-
         TestParams(np.float16, 1, 3600, 2, 4096, 1, 3600, PAD_VALUE_MAX),
         TestParams(np.int16, 16, 200, 20, 512, 16, 200, PAD_VALUE_MAX),
+        TestParams(np.int8, 16, 200, 20, 512, 16, 200, PAD_VALUE_MAX),
     ]
 
     for i, param in enumerate(case_params_list):
