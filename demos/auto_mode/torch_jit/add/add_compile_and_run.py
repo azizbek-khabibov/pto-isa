@@ -11,6 +11,7 @@
 # --------------------------------------------------------------------------------
 
 import torch
+import torch_npu  # noqa: F401
 
 from jit_util_add import jit_compile
 
