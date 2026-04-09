@@ -132,6 +132,8 @@ tquant
 tisa_coverage
 txor
 txors
+tget_async
+tput_async
 )
 
 foreach(TESTCASE ${ALL_TESTCASES})
