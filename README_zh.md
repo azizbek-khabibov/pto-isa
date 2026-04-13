@@ -81,7 +81,7 @@ PTO Tile Lib 并不面向入门级用户，主要面向：
 
 PTO 指令支持两种模式：**Auto Mode（仅在 CPU 仿真中可用）**（无需手动分配 buffer/管理流水线），以及 **Manual Mode**（需要显式管理 buffer 地址与流水线）。推荐按以下路径推进算子优化：
 
-1. 基于 Auto Mode 开发算子，根据算法逻辑生成 PTO 指令序列。示例见 [demos/auto_mode/baseline/add](demos/auto_mode/baseline/add/README_zh.md) 
+1. 基于 Auto Mode 开发算子，根据算法逻辑生成 PTO 指令序列。示例见 [demos/auto_mode/baseline/add](demos/auto_mode/baseline/add/README_zh.md)
 2. 在 CPU 仿真中验证功能与正确性（见：[运行 CPU Simulator](#运行-cpu-simulator建议第一步)）。
 3. 将代码移植到昇腾硬件上验证正确性并采集性能数据。参见 [msprof工具](https://www.hiascend.com/document/detail/zh/canncommercial/850/devaids/Profiling/atlasprofiling_16_0010.html)。
 4. 定位性能瓶颈（CUBE Bound / MTE Bound / Vector Bound），开始优化与调参。参见 [性能优化](docs/coding/opt_zh.md)

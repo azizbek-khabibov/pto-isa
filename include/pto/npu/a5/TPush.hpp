@@ -853,7 +853,7 @@ struct TMPipe {
                 constexpr bool isNZPlus1 = (ConsM / ProdM) != 2;
                 if constexpr (isNZPlus1) { // NZ + 1 mode
                     TINSERT_IMPL<TInsertMode::NZ_PLUS_1>(matTile, tile, row_offset, 0);
-                } else { // NZ mode
+                } else {                   // NZ mode
                     TINSERT_IMPL(matTile, tile, static_cast<uint16_t>(row_offset), static_cast<uint16_t>(0));
                 }
             } else if constexpr (isSplitN) {

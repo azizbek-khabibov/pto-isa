@@ -52,12 +52,12 @@ def generate_case_name(param, i):
         np.int32: 'int32',
         np.int16: 'int16'
     }[param.dtype]
-    
+
     def substring(a, b) -> str:
         return f"_{a}x{b}"
-        
+
     name = f"TRELUTest.case_{i}"
-    
+
     return name
 
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
         TReluParams(np.int32, 64, 64, 64, 64, 64, 64),
         TReluParams(np.float16, 16, 256, 16, 256, 16, 256),
         TReluParams(np.int16, 64, 64, 64, 64, 64, 64),
-        
+
         TReluParams(np.float32, 64, 64, 64, 64, 60, 55),
         TReluParams(np.int32, 64, 64, 64, 64, 60, 55),
         TReluParams(np.float16, 64, 64, 96, 96, 64, 60),

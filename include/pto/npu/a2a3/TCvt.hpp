@@ -511,8 +511,8 @@ PTO_INTERNAL void GenCastCallFp16ToInt8_NonSatTorch(__ubuf__ typename TileDataD:
     const uint16_t hwFp16Stride = (srcRepeatStride >= 4) ? (uint16_t)4 : srcRepeatStride;
     const uint16_t factor = srcRepeatStride / hwFp16Stride; // = 2 for S=8, = 1 for S<=4
     const uint16_t totalHwRepeats = static_cast<uint16_t>(repeatNum) * factor;
-    const uint16_t hwInt32Stride = hwFp16Stride * 2; // int32 is 2x wider than fp16 in blocks
-    const uint16_t hwInt16Stride = hwFp16Stride;     // int16 same width as fp16 in blocks
+    const uint16_t hwInt32Stride = hwFp16Stride * 2;        // int32 is 2x wider than fp16 in blocks
+    const uint16_t hwInt16Stride = hwFp16Stride;            // int16 same width as fp16 in blocks
     const uint16_t hwDstStride =
         (hwFp16Stride + 1) / 2; // int8 is half as wide as fp16 in blocks (ceiling division, min 1)
 
