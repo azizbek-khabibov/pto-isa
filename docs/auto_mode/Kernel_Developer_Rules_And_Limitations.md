@@ -88,7 +88,6 @@ else {
 ```
 
 ## 1.4 - It's strongly recommended NOT to use double/multi buffering at the moment
-
 For now, the double/multi buffering in auto mode isn't fully supported, because once the kernels becomes complicated, using double buffering always
 involves complex control flows, imposing huges challenges for compilers to do auto-sync.
 Auto mode compiler team is trying to design a dedicated abstraction/interface (with some constraints) to kernel developers, to enable double buffering,

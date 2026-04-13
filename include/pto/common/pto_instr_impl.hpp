@@ -14,6 +14,7 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include <pto/common/pto_tile.hpp>
 #include <pto/common/type.hpp>
 #include <pto/common/event.hpp>
+#include <pto/common/arch_cce_intrinsic.hpp>
 
 #ifdef PTO_NPU_ARCH_A2A3
 #include "pto/npu/a2a3/TAssign.hpp"
@@ -92,7 +93,6 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/npu/a2a3/TBitwiseSOp.hpp"
 #include "pto/npu/a2a3/TGatherB.hpp"
 #include "pto/npu/a2a3/TColMin.hpp"
-#include "pto/npu/a2a3/TColReduceIdx.hpp"
 #include "pto/npu/a2a3/TScatter.hpp"
 #include "pto/npu/a2a3/TColExpand.hpp"
 #include "pto/npu/a2a3/TTri.hpp"
@@ -112,6 +112,7 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/npu/a2a3/TDequant.hpp"
 #include "pto/npu/a2a3/TPush.hpp"
 #include "pto/npu/a2a3/TPop.hpp"
+#include "pto/npu/a2a3/TColReduceIdx.hpp"
 #endif
 
 #ifdef PTO_NPU_ARCH_A5
@@ -155,7 +156,6 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/npu/a5/TColSum.hpp"
 #include "pto/npu/a5/TColProd.hpp"
 #include "pto/npu/a5/TColMax.hpp"
-#include "pto/npu/a5/TColReduceIdx.hpp"
 #include "pto/npu/a5/TColMin.hpp"
 #include "pto/npu/a5/TColExpand.hpp"
 #include "pto/npu/a5/TConcat.hpp"
@@ -221,10 +221,14 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/npu/a5/TInsert.hpp"
 #include "pto/npu/a5/TPush.hpp"
 #include "pto/npu/a5/TPop.hpp"
+#include "pto/npu/a5/TColReduceIdx.hpp"
 #endif
 
 #ifdef PTO_NPU_ARCH_KIRIN9030
 #include "pto/npu/kirin9030/header.hpp"
+#endif
+#ifdef PTO_NPU_ARCH_KIRINX90
+#include "pto/npu/kirinX90/header.hpp"
 #endif
 
 #ifdef __CPU_SIM
@@ -256,7 +260,6 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/cpu/TRowSum.hpp"
 #include "pto/cpu/TRowProd.hpp"
 #include "pto/cpu/TRowReduceIdx.hpp"
-#include "pto/cpu/TColReduceIdx.hpp"
 #include "pto/cpu/TMax.hpp"
 #include "pto/cpu/TExtract.hpp"
 #include "pto/cpu/TFillPad.hpp"
@@ -301,7 +304,7 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include "pto/cpu/MGatherScatter.hpp"
 #include "pto/cpu/TPush.hpp"
 #include "pto/cpu/TPop.hpp"
-#include "pto/cpu/TInsert.hpp"
+#include "pto/cpu/TColReduceIdx.hpp"
 #include "pto/cpu/comm/TBroadcast.hpp"
 #include "pto/cpu/comm/TTest.hpp"
 #include "pto/cpu/comm/TGet.hpp"

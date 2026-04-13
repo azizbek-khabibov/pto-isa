@@ -27,13 +27,12 @@ def gen_golden_data_trem(case_name, param):
     input2 = cast_for_compute(np.random.randint(1, 10, size=[row, col]), dtype)
 
     # Perform the addbtraction
-    golden = zeros([row, col], dtype)
-    golden[:h_valid, :w_valid] = cast_for_compute(np.fmod(input1, input2), dtype)[:h_valid, :w_valid]
+    golden = input1 % input2
 
     # Save the input and golden data to binary files
-    write_array("input1.bin", input1, dtype)
-    write_array("input2.bin", input2, dtype)
-    write_array("golden.bin", golden, dtype)
+    input1.tofile("input1.bin")
+    input2.tofile("input2.bin")
+    golden.tofile("golden.bin")
 
 
 class TRemParams:
@@ -49,7 +48,8 @@ def generate_case_name(param):
     dtype_str = normalize_case_dtype_name(param.dtype, {
         np.float32: 'float',
         np.float16: 'half',
-    })
+    }[param.dtype]
+
     def substring(a, b) -> str:
         return f"_{a}x{b}"
 

@@ -26,11 +26,11 @@ def gen_golden_data_texp(case_name, param):
     input1 = cast_for_compute(np.random.random(size=[row, col]), dtype)
 
     # Perform the addbtraction
-    golden = cast_for_compute(np.exp(input1), dtype)
+    golden = np.exp(input1)
 
     # Save the input and golden data to binary files
-    write_array("input1.bin", input1, dtype)
-    write_array("golden.bin", golden, dtype)
+    input1.tofile("input1.bin")
+    golden.tofile("golden.bin")
 
 
 class TExpParams:
@@ -105,7 +105,8 @@ if __name__ == "__main__":
         TExpParams(np.float16, 128, 128, 64, 64),
         TExpParams(np.float16, 128, 128, 32, 32),
         TExpParams(np.float32, 128, 128, 32, 32),
-        TExpParams(np.float32, 128, 128, 32, 16),
+        TExpParams(np.float32, 128, 128, 32, 16)
+
     ]
     if os.getenv("PTO_CPU_SIM_ENABLE_BF16") == "1":
         case_params_list.extend([TExpParams(BF16_DTYPE, 64, 64, 64, 64), TExpParams(BF16_DTYPE, 32, 32, 32, 32)])

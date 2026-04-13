@@ -124,12 +124,10 @@ ttrans
 ttri
 twait
 treshape
-tpushpop_cv
 trandom
 thistogram
 timg2col
 tquant
-tisa_coverage
 txor
 txors
 tget_async

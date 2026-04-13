@@ -20,10 +20,10 @@ np.random.seed(19)
 def gen_golden_data_trelu(case_name, param):
     dtype = param.dtype
 
-    row, col = [param.valid_row, param.valid_col]
+    row_valid, col_valid = [param.valid_row, param.valid_col]
 
     # Generate random input arrays
-    input1 = cast_for_compute(np.random.randint(1, 10, size=[row, col]), dtype)
+    input1 = np.random.randint(1, 10, size=[row_valid, col_valid]).astype(dtype)
 
     # Perform the addbtraction
     golden = cast_for_compute(np.maximum(input1, 0), dtype)
@@ -44,19 +44,20 @@ class TReluParams:
         self.valid_col = valid_col
 
 
-def generate_case_name(param):
-    dtype_str = normalize_case_dtype_name(
-        param.dtype, {np.float32: "float", np.float16: "half", np.int8: "int8", np.int32: "int32", np.int16: "int16"}
-    )
-
+def generate_case_name(param, i):
+    dtype_str = {
+        np.float32: 'float',
+        np.float16: 'half',
+        np.int8: 'int8',
+        np.int32: 'int32',
+        np.int16: 'int16'
+    }[param.dtype]
+    
     def substring(a, b) -> str:
         return f"_{a}x{b}"
-
-    name = f"TRELUTest.case_{dtype_str}"
-    name += substring(param.src_tile_row, param.src_tile_col)
-    name += substring(param.dst_tile_row, param.dst_tile_col)
-    name += substring(param.valid_row, param.valid_col)
-
+        
+    name = f"TRELUTest.case_{i}"
+    
     return name
 
 
@@ -68,21 +69,19 @@ if __name__ == "__main__":
         TReluParams(np.int32, 64, 64, 64, 64, 64, 64),
         TReluParams(np.float16, 16, 256, 16, 256, 16, 256),
         TReluParams(np.int16, 64, 64, 64, 64, 64, 64),
+        
         TReluParams(np.float32, 64, 64, 64, 64, 60, 55),
         TReluParams(np.int32, 64, 64, 64, 64, 60, 55),
         TReluParams(np.float16, 64, 64, 96, 96, 64, 60),
-        TReluParams(np.int16, 64, 64, 96, 96, 64, 60),
+        TReluParams(np.int16, 64, 64, 96, 96, 64, 60)
     ]
     if os.getenv("PTO_CPU_SIM_ENABLE_BF16") == "1":
         case_params_list.append(TReluParams(BF16_DTYPE, 16, 256, 16, 256, 16, 256))
 
     for i, param in enumerate(case_params_list):
-        case_name = generate_case_name(param)
-        if i < 8:
-            output_dir = os.path.join(script_dir, f"TRELUTest.case_{i}")
-        else:
-            output_dir = os.path.join(script_dir, case_name)
-        os.makedirs(output_dir, exist_ok=True)
+        case_name = generate_case_name(param, i)
+        if not os.path.exists(case_name):
+            os.makedirs(case_name)
         original_dir = os.getcwd()
         os.chdir(output_dir)
         gen_golden_data_trelu(case_name, param)
