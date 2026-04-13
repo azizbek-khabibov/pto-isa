@@ -296,56 +296,6 @@ TEST_F(TEXTRACTTest, case_int8_t_int32_t_Vec_Vec_128_64_128_64_IDX_16_24_L_0_0)
     textract_test<int8_t, int32_t, TileType::Vec, TileType::Vec, 128, 64, 128, 64, 16, 24, 0, 0>();
 }
 
-TEST_F(TEXTRACTTest, case_half_half_Mat_Vec_32_32_32_32_IDX_16_24_L_0_0)
-{
-    textract_test<half, half, TileType::Mat, TileType::Vec, 32, 32, 32, 32, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_half_float_Mat_Vec_32_32_32_32_IDX_16_24_L_0_0)
-{
-    textract_test<half, float, TileType::Mat, TileType::Vec, 32, 32, 32, 32, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_float_float_Mat_Vec_128_96_128_96_IDX_16_24_L_0_0)
-{
-    textract_test<float, float, TileType::Mat, TileType::Vec, 128, 96, 128, 96, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_int32_t_float_Mat_Vec_128_96_128_96_IDX_16_24_L_0_0)
-{
-    textract_test<int32_t, float, TileType::Mat, TileType::Vec, 128, 96, 128, 96, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_int8_t_int32_t_Mat_Vec_128_64_128_64_IDX_16_24_L_0_0)
-{
-    textract_test<int8_t, int32_t, TileType::Mat, TileType::Vec, 128, 64, 128, 64, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_half_half_Vec_Vec_32_32_32_32_IDX_16_24_L_0_0)
-{
-    textract_test<half, half, TileType::Vec, TileType::Vec, 32, 32, 32, 32, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_half_float_Vec_Vec_32_32_32_32_IDX_16_24_L_0_0)
-{
-    textract_test<half, float, TileType::Vec, TileType::Vec, 32, 32, 32, 32, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_float_float_Vec_Vec_128_96_128_96_IDX_16_24_L_0_0)
-{
-    textract_test<float, float, TileType::Vec, TileType::Vec, 128, 96, 128, 96, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_int32_t_float_Vec_Vec_128_96_128_96_IDX_16_24_L_0_0)
-{
-    textract_test<int32_t, float, TileType::Vec, TileType::Vec, 128, 96, 128, 96, 16, 24, 0, 0>();
-}
-
-TEST_F(TEXTRACTTest, case_int8_t_int32_t_Vec_Vec_128_64_128_64_IDX_16_24_L_0_0)
-{
-    textract_test<int8_t, int32_t, TileType::Vec, TileType::Vec, 128, 64, 128, 64, 16, 24, 0, 0>();
-}
-
 #ifdef CPU_SIM_BFLOAT_ENABLED
 TEST_F(TEXTRACTTest, case_bfloat16_t_bfloat16_t_Mat_Mat_32_32_32_32_IDX_0_0_L_0_0)
 {
