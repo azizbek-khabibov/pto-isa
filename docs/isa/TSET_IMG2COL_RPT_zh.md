@@ -10,45 +10,33 @@
 
 ## 数学语义
 
-No direct tensor arithmetic is produced by this instruction. It updates IMG2COL control state used by subsequent data-movement operations.
+该指令本身不产生直接的张量算术结果，而是更新供后续数据搬运操作使用的 IMG2COL 控制状态。
 
 ## 汇编语法
 
-PTO-AS 形式：参见 [PTO-AS Specification](../assembly/PTO-AS.md).
+PTO-AS 形式：参见 [PTO-AS Specification](../assembly/PTO-AS_zh.md).
 
-Schematic form:
+示意形式：
 
 ```text
 tset_img2col_rpt %cfg
 ```
 
-### AS Level 1 (SSA)
+### AS Level 1（SSA）
 
 ```text
 pto.tset_img2col_rpt %cfg : !pto.fmatrix_config -> ()
 ```
 
-### AS Level 2 (DPS)
+### AS Level 2（DPS）
 
 ```text
 pto.tset_img2col_rpt ins(%cfg : !pto.fmatrix_config) outs()
 ```
 
-### AS Level 1（SSA）
-
-```text
-pto.tset_img2col_rpt %cfg
-```
-
-### AS Level 2（DPS）
-
-```text
-pto.tset_img2col_rpt ins(%cfg) outs()
-```
-
 ## C++ 内建接口
 
-声明于 `include/pto/common/pto_instr.hpp`:
+声明于 `include/pto/common/pto_instr.hpp`：
 
 ```cpp
 template <typename ConvTileData, typename... WaitEvents>
