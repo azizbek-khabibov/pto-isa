@@ -28,5 +28,56 @@ PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, uint32_t idx
     }
 }
 
+template <typename DstTileData, typename SrcTileData, ReluPreMode reluMode>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, uint32_t idxRow = 0, uint32_t idxCol = 0)
+{
+    (void)reluMode;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
+template <typename DstTileData, typename SrcTileData, ReluPreMode reluMode>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, uint64_t preQuantScalar, uint32_t idxRow = 0,
+                                uint32_t idxCol = 0)
+{
+    (void)preQuantScalar;
+    (void)reluMode;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
+template <typename DstTileData, typename SrcTileData, typename FpTileData, ReluPreMode reluMode>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, FpTileData &fp, uint32_t idxRow = 0,
+                                uint32_t idxCol = 0)
+{
+    (void)fp;
+    (void)reluMode;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
+template <auto mode, typename DstTileData, typename SrcTileData>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, uint32_t idxRow = 0, uint32_t idxCol = 0)
+{
+    (void)mode;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
+template <auto mode, typename DstTileData, typename SrcTileData>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, uint64_t preQuantScalar, uint32_t idxRow = 0,
+                                uint32_t idxCol = 0)
+{
+    (void)mode;
+    (void)preQuantScalar;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
+template <typename DstTileData, typename SrcTileData, typename FpTileData, auto mode, ReluPreMode reluMode>
+PTO_INTERNAL void TEXTRACT_IMPL(DstTileData &dst, SrcTileData &src, FpTileData &fp, uint32_t idxRow = 0,
+                                uint32_t idxCol = 0)
+{
+    (void)mode;
+    (void)fp;
+    (void)reluMode;
+    TEXTRACT_IMPL(dst, src, idxRow, idxCol);
+}
+
 } // namespace pto
 #endif // TEXTRACT_HPP
