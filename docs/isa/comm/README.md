@@ -92,7 +92,7 @@ Returned by `TPUT_ASYNC` / `TGET_ASYNC`. Represents an outstanding asynchronous 
 
 ### AsyncSession
 
-Engine-agnostic session for async DMA operations. Programs build a session once and pass it to all async calls. The session encapsulates the engine type, scratch buffer, and workspace needed for asynchronous progress.
+Engine-agnostic session for async DMA operations. Programs build a session once and pass it to all async calls. The session encapsulates the engine type, scratch buffer, and workspace needed for asynchronous progress. The implementation types live under `include/pto/comm/async_common/async_types.hpp`.
 
 ### ParallelGroup
 
