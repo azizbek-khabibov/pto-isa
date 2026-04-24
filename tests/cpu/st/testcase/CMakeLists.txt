@@ -49,6 +49,7 @@ taddsc
 tassign_alias
 tand
 tands
+targreduceop
 tbroadcast
 tci
 tcmp
