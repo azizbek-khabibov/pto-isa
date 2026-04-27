@@ -86,5 +86,5 @@ void example_enable_tf32() {
 ## See Also
 
 - Instruction set overview: [Sync And Config](../../sync-and-config.md)
-- Previous op: [pto.tassign](./tassign.md)
-- Next op: [pto.set_img2col_rpt](./set-img2col-rpt.md)
+- Previous op: [pto.sethf32mode](./sethf32mode.md)
+- Next op: [pto.setfmatrix](./setfmatrix.md)

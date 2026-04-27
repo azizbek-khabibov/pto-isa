@@ -11,10 +11,11 @@
 | [pto.tassign](./ops/sync-and-config/tassign_zh.md) | 把 tile 绑定到 tile-buffer 地址 | 资源绑定 |
 | [pto.tsync](./ops/sync-and-config/tsync_zh.md) | 等待事件或插入屏障 | 同步 |
 | [pto.talias](./ops/sync-and-config/talias.md) | 基于同一底层存储创建 tile alias 视图 | 视图 |
-| [pto.settf32mode](./ops/sync-and-config/settf32mode.md) | 设置 tile 路径的 TF32 行为 | 模式配置 |
-| [pto.setfmatrix](./ops/sync-and-config/setfmatrix.md) | 设置 FMATRIX engine 模式与地址 | 模式配置 |
-| [pto.set_img2col_rpt](./ops/sync-and-config/set-img2col-rpt.md) | 设置 img2col 重复次数 | 模式配置 |
-| [pto.set_img2col_padding](./ops/sync-and-config/set-img2col-padding.md) | 设置 img2col padding 形态 | 模式配置 |
+| [pto.sethf32mode](./ops/sync-and-config/sethf32mode_zh.md) | 设置 tile 路径的 HF32 行为 | 模式配置 |
+| [pto.settf32mode](./ops/sync-and-config/settf32mode_zh.md) | 设置 tile 路径的 TF32 行为 | 模式配置 |
+| [pto.setfmatrix](./ops/sync-and-config/setfmatrix_zh.md) | 设置 FMATRIX engine 模式与地址 | 模式配置 |
+| [pto.set_img2col_rpt](./ops/sync-and-config/set-img2col-rpt_zh.md) | 设置 img2col 重复次数 | 模式配置 |
+| [pto.set_img2col_padding](./ops/sync-and-config/set-img2col-padding_zh.md) | 设置 img2col padding 形态 | 模式配置 |
 | [pto.subview](./ops/sync-and-config/subview.md) | 基于已有 tile 创建子视图 | 视图 |
 | [pto.get_scale_addr](./ops/sync-and-config/get-scale-addr.md) | 取得量化 / MX 路径使用的 scale 地址 | 辅助查询 |
 

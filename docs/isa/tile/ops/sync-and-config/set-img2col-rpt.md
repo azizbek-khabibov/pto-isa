@@ -99,5 +99,5 @@ pto.set_img2col_rpt %cfg : !pto.fmatrix_config -> ()
 ## See Also
 
 - Instruction set overview: [Sync And Config](../../sync-and-config.md)
-- Previous op: [pto.settf32mode](./settf32mode.md)
+- Previous op: [pto.setfmatrix](./setfmatrix.md)
 - Next op: [pto.set_img2col_padding](./set-img2col-padding.md)

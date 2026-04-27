@@ -120,8 +120,9 @@ nav:
               - pto.tsync: docs/isa/tile/ops/sync-and-config/tsync.md
               - pto.tassign: docs/isa/tile/ops/sync-and-config/tassign.md
               - pto.talias: docs/isa/tile/ops/sync-and-config/talias.md
-              - pto.setfmatrix: docs/isa/tile/ops/sync-and-config/setfmatrix.md
+              - pto.sethf32mode: docs/isa/tile/ops/sync-and-config/sethf32mode.md
               - pto.settf32mode: docs/isa/tile/ops/sync-and-config/settf32mode.md
+              - pto.setfmatrix: docs/isa/tile/ops/sync-and-config/setfmatrix.md
               - pto.set_img2col_rpt: docs/isa/tile/ops/sync-and-config/set-img2col-rpt.md
               - pto.set_img2col_padding: docs/isa/tile/ops/sync-and-config/set-img2col-padding.md
               - pto.subview: docs/isa/tile/ops/sync-and-config/subview.md

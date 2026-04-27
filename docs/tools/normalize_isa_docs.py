@@ -429,8 +429,8 @@ void example_manual() {
 ```
 """
 
-    if instr == "SETTF32MODE":
-        return """# SETTF32MODE
+    if instr == "SETHF32MODE":
+        return """# SETHF32MODE
 
 ## Introduction
 
@@ -449,7 +449,7 @@ PTO-AS form: see `docs/isa/syntax-and-operands/assembly-model.md`.
 Schematic form:
 
 ```text
-settf32mode {enable = true, mode = ...}
+sethf32mode {enable = true, mode = ...}
 ```
 
 ## C++ Intrinsic
@@ -458,7 +458,7 @@ Declared in `include/pto/common/pto_instr.hpp`:
 
 ```cpp
 template <bool isEnable, RoundMode hf32TransMode = RoundMode::CAST_ROUND, typename... WaitEvents>
-PTO_INST RecordEvent SETTF32MODE(WaitEvents &... events);
+PTO_INST RecordEvent SETHF32MODE(WaitEvents &... events);
 ```
 
 ## Constraints
@@ -474,7 +474,7 @@ PTO_INST RecordEvent SETTF32MODE(WaitEvents &... events);
 using namespace pto;
 
 void example_enable_hf32() {
-  SETTF32MODE<true, RoundMode::CAST_ROUND>();
+  SETHF32MODE<true, RoundMode::CAST_ROUND>();
 }
 ```
 """

@@ -23,7 +23,7 @@ Tile Buffer ──► Tile Compute ──► Tile Buffer ──► pto.tstore: T
 
 | | Class | Description | Examples |
 |-|-------|-------------|----------|
-| | Sync and Config | Resource binding, tile address assignment, alias views, pipeline synchronization | `pto.tassign`, `pto.tsync`, `pto.talias`, `pto.settf32mode`, `pto.setfmatrix`, `pto.set_img2col_rpt`, `pto.set_img2col_padding`, `pto.subview`, `pto.get_scale_addr` |
+| | Sync and Config | Resource binding, tile address assignment, alias views, pipeline synchronization | `pto.tassign`, `pto.tsync`, `pto.talias`, `pto.sethf32mode`, `pto.settf32mode`, `pto.setfmatrix`, `pto.set_img2col_rpt`, `pto.set_img2col_padding`, `pto.subview`, `pto.get_scale_addr` |
 | | Elementwise Tile-Tile | Lane-wise binary and unary operations | `pto.tadd`, `pto.tmul`, `pto.tpow`, `pto.tcmp`, `pto.tcvt`, `pto.tsel`, `pto.trelu` |
 | | Tile-Scalar and Immediate | Tile combined with scalar or immediate operands | `pto.tadds`, `pto.taxpy`, `pto.tmuls`, `pto.tpows`, `pto.tlrelu`, `pto.tcmps` |
 | | Reduce and Expand | Row/column reductions and expansions | `pto.trowsum`, `pto.tcolmax`, `pto.trowexpand`, `pto.tcolexpand` |
@@ -32,7 +32,7 @@ Tile Buffer ──► Tile Compute ──► Tile Buffer ──► pto.tstore: T
 | | Layout and Rearrangement | Reshape, transpose, extract, insert, concatenate, pack | `pto.tmov`, `pto.ttrans`, `pto.tconcat`, `pto.tpack`, `pto.treshape`, `pto.textract`, `pto.tinsert`, `pto.timg2col` |
 | | Irregular and Complex | Sort, quantize, dequantize, generated state, index movement, partial reductions | `pto.tmrgsort`, `pto.tsort32`, `pto.tquant`, `pto.tdequant`, `pto.trandom`, `pto.thistogram`, `pto.tgather`, `pto.tpartadd` |
 
-> **Configuration tile-side modes** (`pto.settf32mode`, `pto.setfmatrix`, `pto.set_img2col_rpt`, `pto.set_img2col_padding`, `pto.subview`, `pto.get_scale_addr`) are Tile ISA instructions that program tile-mode registers. They are architecturally tile-state configuration, not scalar control-shell ops. They are documented in the [Sync and Config](../tile/sync-and-config.md) group.
+> **Configuration tile-side modes** (`pto.sethf32mode`, `pto.settf32mode`, `pto.setfmatrix`, `pto.set_img2col_rpt`, `pto.set_img2col_padding`, `pto.subview`, `pto.get_scale_addr`) are Tile ISA instructions that program tile-mode registers. They are architecturally tile-state configuration, not scalar control-shell ops. They are documented in the [Sync and Config](../tile/sync-and-config.md) group.
 
 ## Inputs
 

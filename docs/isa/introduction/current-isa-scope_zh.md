@@ -28,7 +28,7 @@ PTO 定义五套具名指令集，并为每条指令提供明确参考页：
 
 ### 同步与配置
 
-`tsync`、`tassign`、`talias`、`setfmatrix`、`settf32mode`、`set_img2col_rpt`、`set_img2col_padding`、`subview`、`get_scale_addr`
+`tsync`、`tassign`、`talias`、`sethf32mode`、`settf32mode`、`setfmatrix`、`set_img2col_rpt`、`set_img2col_padding`、`subview`、`get_scale_addr`
 
 ### 逐元素 Tile-Tile
 

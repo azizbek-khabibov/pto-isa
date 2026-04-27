@@ -9,6 +9,7 @@ Sync-and-config operations manage tile-visible state: resource binding, event se
 | | [pto.tassign](./ops/sync-and-config/tassign.md) | Bind tile register to a UB address | Resource | `TASSIGN(tile, addr)` |
 | | [pto.tsync](./ops/sync-and-config/tsync.md) | Synchronize execution, wait on events, insert barrier | Sync | `TSYNC(events...)` |
 | | [pto.talias](./ops/sync-and-config/talias.md) | Create an alias view that shares tile storage | View | `TALIAS(dst, src)` |
+| | [pto.sethf32mode](./ops/sync-and-config/sethf32mode.md) | Set HF32 computation mode | Config | `SETHF32MODE(mode)` |
 | | [pto.settf32mode](./ops/sync-and-config/settf32mode.md) | Set TF32 computation mode | Config | `SETTF32MODE(mode)` |
 | | [pto.setfmatrix](./ops/sync-and-config/setfmatrix.md) | Set FMATRIX engine mode and address | Config | `SETFMATRIX(tile)` |
 | | [pto.set_img2col_rpt](./ops/sync-and-config/set-img2col-rpt.md) | Set img2col repetition count | Config | `SET_IMG2COL_RPT(rpt)` |
@@ -23,7 +24,7 @@ Sync-and-config operations change tile-visible state that later tile instruction
 - **`TASSIGN`**: binds a physical UB address to a tile register. Without `TASSIGN`, the compiler/runtime auto-assigns addresses. `TASSIGN` enables manual placement for performance tuning.
 - **`TSYNC`**: waits on event tokens (`events...`) or inserts per-op pipeline barriers (`TSYNC<Op>()`). See [Ordering and Synchronization](../machine-model/ordering-and-synchronization.md) for the full event model.
 - **`TALIAS`**: creates a second tile view over the same payload storage. It changes the visible tile view, not the underlying bytes.
-- **`SETTF32MODE` / `SETFMATRIX` / `SET_IMG2COL_RPT` / `SET_IMG2COL_PADDING`**: tile-local configuration for TF32 computation mode, FMATRIX engine binding, and IMG2COL parameters. These program tile-side registers consumed by subsequent compute and DMA operations.
+- **`SETHF32MODE` / `SETTF32MODE` / `SETFMATRIX` / `SET_IMG2COL_RPT` / `SET_IMG2COL_PADDING`**: tile-local configuration for HF32/TF32 computation mode, FMATRIX engine binding, and IMG2COL parameters. These program tile-side registers consumed by subsequent compute and DMA operations.
 - **`SUBVIEW`**: creates a logical view of a tile with adjusted offsets and/or reduced shape. The underlying storage is shared with the source tile.
 - **`GET_SCALE_ADDR`**: computes a right-shifted address of a scale tensor used in quantized matmul operations.
 
@@ -70,6 +71,7 @@ template <typename OpTag>
 PTO_INST void TSYNC();
 
 // Set computation modes
+PTO_INST void SETHF32MODE(bool enable, RoundMode mode);
 PTO_INST void SETTF32MODE(bool enable, RoundMode mode);
 PTO_INST void SETFMATRIX(TileData& tile);
 

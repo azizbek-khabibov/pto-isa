@@ -199,7 +199,7 @@ PTO ISA
 │   ├── DMA Copy                     GM↔vector-tile-buffer transfer configuration
 │   ├── Predicate Load/Store         Mask-based scalar memory access
 │   ├── Predicate Generation         pset, pge, plt, pand, por, pxor, pnot, etc.
-│   ├── Control and Configuration    tile-prefixed mode/config ops such as settf32mode and setfmatrix
+│   ├── Control and Configuration    tile-prefixed mode/config ops such as sethf32mode, settf32mode, and setfmatrix
 │   └── Shared Arithmetic/SCF         Scalar arithmetic and structured control flow
 │
 ├── Communication Instructions (pto.*)       Collective and runtime operations

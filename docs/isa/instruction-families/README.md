@@ -87,7 +87,7 @@ Instruction set pages do not repeat per-op details; they set the contract for th
 ```
 Instruction Sets
 ├── Tile Instruction Set
-│   ├── Sync and Config            → pto.tsync, pto.tassign, pto.talias, pto.settf32mode,
+│   ├── Sync and Config            → pto.tsync, pto.tassign, pto.talias, pto.sethf32mode, pto.settf32mode,
 │   │                                pto.setfmatrix, pto.set_img2col_rpt,
 │   │                                pto.set_img2col_padding, pto.subview,
 │   │                                pto.get_scale_addr

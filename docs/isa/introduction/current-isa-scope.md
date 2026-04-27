@@ -28,7 +28,7 @@ That yields **289 named instructions** in the current reference set.
 
 ### Sync And Config
 
-`tsync`, `tassign`, `talias`, `setfmatrix`, `settf32mode`, `set_img2col_rpt`, `set_img2col_padding`, `subview`, `get_scale_addr`
+`tsync`, `tassign`, `talias`, `sethf32mode`, `settf32mode`, `setfmatrix`, `set_img2col_rpt`, `set_img2col_padding`, `subview`, `get_scale_addr`
 
 ### Elementwise Tile-Tile
 

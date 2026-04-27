@@ -26,9 +26,9 @@ pto.tassign ins(%tile, %addr : !pto.tile_buf<...>, dtype)
 
 ---
 
-### SETFMATRIX
+### pto.setfmatrix
 
-该指令的详细介绍请见[pto.setfmatrix](../isa/tile/ops/sync-and-config/setfmatrix.md)
+该指令的详细介绍请见[pto.setfmatrix](../isa/tile/ops/sync-and-config/setfmatrix_zh.md)
 
 **AS Level 1 (SSA)：**
 
@@ -44,9 +44,9 @@ pto.setfmatrix ins(%cfg : !pto.fmatrix_config) outs()
 
 ---
 
-### SET_IMG2COL_RPT
+### pto.set_img2col_rpt
 
-该指令的详细介绍请见[pto.set_img2col_rpt](../isa/tile/ops/sync-and-config/set-img2col-rpt.md)
+该指令的详细介绍请见[pto.set_img2col_rpt](../isa/tile/ops/sync-and-config/set-img2col-rpt_zh.md)
 
 **AS Level 1 (SSA)：**
 
@@ -62,9 +62,9 @@ pto.set_img2col_rpt ins(%cfg : !pto.fmatrix_config) outs()
 
 ---
 
-### SET_IMG2COL_PADDING
+### pto.set_img2col_padding
 
-该指令的详细介绍请见[pto.set_img2col_padding](../isa/tile/ops/sync-and-config/set-img2col-padding.md)
+该指令的详细介绍请见[pto.set_img2col_padding](../isa/tile/ops/sync-and-config/set-img2col-padding_zh.md)
 
 **AS Level 1 (SSA)：**
 

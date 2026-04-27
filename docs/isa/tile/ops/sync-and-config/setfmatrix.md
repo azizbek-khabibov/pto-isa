@@ -84,4 +84,5 @@ void example() {
 ## See Also
 
 - Instruction set overview: [Sync And Config](../../sync-and-config.md)
+- Previous op: [pto.settf32mode](./settf32mode.md)
 - Next op: [pto.set_img2col_rpt](./set-img2col-rpt.md)

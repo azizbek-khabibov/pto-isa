@@ -177,4 +177,4 @@ void pingpong() {
 
 - Instruction set overview: [Sync And Config](../../sync-and-config.md)
 - Previous op in instruction set: [pto.tsync](./tsync.md)
-- Next op in instruction set: [pto.settf32mode](./settf32mode.md)
+- Next op in instruction set: [pto.sethf32mode](./sethf32mode.md)

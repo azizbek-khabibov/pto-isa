@@ -10,7 +10,7 @@
 
 本树是权威的 PTO ISA 手册。文本汇编拼写属于 PTO ISA 的语法层，而非第二份并行的架构手册。
 
-- PTO ISA 定义了架构可见的语义、合法性、状态、排序、目标 profile 边界，以及 tile、vector、scalar、communication、system scheduling 操作的可见行为
+- PTO ISA 定义了架构可见的语义、合法性、状态、排序、目标 profile 边界，以及 tile、vector、scalar、communication、系统调度操作的可见行为
 - PTO-AS 是用于编写这些操作和操作数的汇编拼写。它是 PTO ISA 的表达方式的一部分，而非具有不同语义的分立 ISA
 
 如果问题是"PTO 程序在 CPU、A2/A3 和 A5 上的含义是什么？"，请留在本树中。如果问题是"这个操作的操作数形状或文本拼写是什么？"，请使用本树中语法与操作数相关的页面。
@@ -28,7 +28,7 @@
 - [位置意图与合法性](state-and-types/location-intent-and-legality_zh.md)
 - [内存模型](memory-model/consistency-baseline_zh.md)
 
-- [指令集总览](instruction-families/README.md)
+- [指令集总览](instruction-families/README_zh.md)
 - [指令族](instruction-families/README_zh.md)
 - [指令描述格式](reference/format-of-instruction-descriptions_zh.md)
 - [Tile 指令集参考](tile/README_zh.md)
