@@ -37,11 +37,11 @@ def gen_golden_data_tcmp(param):
     if param.mode == "LT":
         bool_result = (input1 < input2)
     if param.mode == "GT":
-        bool_result = (input1 > input2) 
+        bool_result = (input1 > input2)
     if param.mode == "GE":
-        bool_result = (input1 >= input2) 
+        bool_result = (input1 >= input2)
     if param.mode == "LE":
-        bool_result = (input1 <= input2) 
+        bool_result = (input1 <= input2)
 
     # Apply valid region constraints
     output = np.zeros((row, col), dtype=np.uint8)
