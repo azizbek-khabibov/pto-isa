@@ -72,6 +72,8 @@ No architectural side effects beyond producing the destination tile. Does not im
 
     - For A3, 2 source Tile, destination Tile, temporary space must in different memory range without overlapping.
 
+    - For A3, `tmp.GetValidRow()` must be greater than or equal to `dst.GetValidCol() + 1`.
+
 ## Performance
 
 ### A2/A3 Throughput
