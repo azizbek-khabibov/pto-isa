@@ -46,127 +46,110 @@ std::string GetGoldenDir()
 using MainPipe = TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>;
 
 static void main_incore_0_aic( float* v1,  float* v2,  float* v3,  void* v4, int32_t v5) {
-  unsigned v6 = 0;
-  const int32_t v7 = 4;
-  const int32_t v8 = 64;
-  const int32_t v9 = 1;
-  const int32_t v10 = 512;
-  const int32_t v11 = 32;
-  const int64_t v12 = 0;
-  const int64_t v13 = 32768;
-  const int32_t v14 = 0;
-
-  auto v15 = TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>(v4, v14, v14);
-  for (size_t v16 = (size_t) v14; v16 < ((size_t) v7); v16 += (size_t) v9) {
-    std::cout<<"Cube : "<<"; i="<<v16<<std::endl;
-    Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null> v17 = Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>(v8, v8);
-    TASSIGN(v17, v13);
-    Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null> v18 = Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>(v8, v8);
+  MainPipe v15(v4, 0, 0);
+  using AccTile = Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null>;
+  using SmallMat = Tile<TileType::Mat, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>;
+  using Matrix = Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>;
+  using TileLeft = Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>;
+  using RightTile = Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null>;
+  for (size_t i = 0; i < 4; i ++) {
+    std::cout<<"Cube : "<<"; i="<<i<<std::endl;
+    Matrix v17(64, 64);
+    TASSIGN(v17, 32768);
+    Matrix v18(64, 64);
     __cbuf__ void* v19 = v17.data();
     uint64_t v20 = reinterpret_cast<uint64_t>(v19);
     TASSIGN(v18, v20);
-    pto::Shape<1, 1, 1, 64, 64> v21 = pto::Shape<1, 1, 1, 64, 64>();
-    pto::Stride<32768, 32768, 32768, 512, 1> v22 = pto::Stride<32768, 32768, 32768, 512, 1>();
-    GlobalTensor<float, pto::Shape<1, 1, 1, 64, 64>, pto::Stride<32768, 32768, 32768, 512, 1>, pto::Layout::ND> v23 = GlobalTensor<float, pto::Shape<1, 1, 1, 64, 64>, pto::Stride<32768, 32768, 32768, 512, 1>, pto::Layout::ND>(v3 + (v6 + v6 * (unsigned) v10 + (unsigned) ((int32_t) (uint32_t) ((int32_t) (uint32_t) ((int32_t) (uint32_t) v5 * (uint32_t) v7) + (uint32_t) ((int32_t) v16)) * (uint32_t) v8) * (unsigned) v9), v21, v22);
-    TLOAD(v18, v23);
-    Tile<TileType::Mat, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null> v24 = Tile<TileType::Mat, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>(v11, v8);
-    TPOP<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, Tile<TileType::Mat, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>, TileSplitAxis::TILE_LEFT_RIGHT>(v15, v24);
-    Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null> v25 = Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>(v11, v8);
-    TASSIGN(v25, v12);
-    Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null> v26 = Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>(v11, v8);
+    using Shape = pto::Shape<1, 1, 1, 64, 64>;
+    using Stride = pto::Stride<32768, 32768, 32768, 512, 1>;
+    GlobalTensor<float, Shape, Stride, pto::Layout::ND> globalTensor(v3 + (((v5 * 4) + i) * 64));
+    TLOAD(v18, globalTensor); 
+    SmallMat v24(32, 64);
+    TPOP<MainPipe, SmallMat, TileSplitAxis::TILE_LEFT_RIGHT>(v15, v24);
+    std::cout<<"Cube Pop: "<<"; i="<<i<<std::endl;
+    TileLeft v25(32, 64);
+    TASSIGN(v25, 0);
+    TileLeft v26(32, 64);
     __ca__ void* v27 = v25.data();
     uint64_t v28 = reinterpret_cast<uint64_t>(v27);
     TASSIGN(v26, v28);
     TMOV(v26, v24);
-    TFREE<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, TileSplitAxis::TILE_LEFT_RIGHT>(v15);
-    Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null> v29 = Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null>(v8, v8);
-    TASSIGN(v29, v12);
-    Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null> v30 = Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null>(v8, v8);
+    TFREE<MainPipe, TileSplitAxis::TILE_LEFT_RIGHT>(v15);
+    RightTile v29(64, 64);
+    TASSIGN(v29, 0);
+    RightTile v30(64, 64);
     __cb__ void* v31 = v29.data();
     uint64_t v32 = reinterpret_cast<uint64_t>(v31);
     TASSIGN(v30, v32);
     TMOV(v30, v18);
-    Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null> v33 = Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null>(v11, v8);
-    TASSIGN(v33, v12);
-    Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null> v34 = Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null>(v11, v8);
+    AccTile v33(32, 64);
+    TASSIGN(v33, 0);
+    AccTile v34(32, 64);
     __cc__ void* v35 = v33.data();
     uint64_t v36 = reinterpret_cast<uint64_t>(v35);
     TASSIGN(v34, v36);
     TMATMUL(v34, v26, v30);
-    TPUSH<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, Tile<TileType::Acc, float, 32, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 1024, PadValue::Null, CompactMode::Null>, TileSplitAxis::TILE_LEFT_RIGHT>(v15, v34);
-  }
+    TPUSH<MainPipe, AccTile, TileSplitAxis::TILE_LEFT_RIGHT>(v15, v34);
+    std::cout<<"Cube Push: "<<"; i="<<i<<std::endl;
+}
 
   return;
 }
 
 static void main_incore_0_aiv( float* v1,  float* v2,  float* v3,  void* v4, int32_t v5) {
-  unsigned v6 = 0;
-  const float v7 = 1.0f;
-  const int32_t v8 = 4;
-  const int32_t v9 = 64;
-  const int32_t v10 = 1;
-  const int32_t v11 = 512;
-  const int32_t v12 = 32;
-  const int64_t v13 = 45056;
-  const int64_t v14 = 40960;
-  const int64_t v15 = 36864;
-  const int64_t v16 = 32768;
-  const int32_t v17 = 0;
-
-  int64_t v18 = get_subblockid();
-  auto v19 = TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>(v4, v17, v17);
-  Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v20 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
-  TASSIGN(v20, v16);
-  Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v21 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
+  int64_t subblock_id = get_subblockid();
+  MainPipe v19(v4, 0, 0);
+  using VecTile = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>;
+  VecTile v20(32, 32);
+  TASSIGN(v20, 32768);
+  VecTile v21(32, 32);
   __ubuf__ void* v22 = v20.data();
   uint64_t v23 = reinterpret_cast<uint64_t>(v22);
   TASSIGN(v21, v23);
-  int32_t v24 = (int32_t) ((uint32_t) ((int32_t) (int64_t) v18) * (uint32_t) v12);
-  pto::Shape<1, 1, 1, 32, 32> v25 = pto::Shape<1, 1, 1, 32, 32>();
-  pto::Stride<2048, 2048, 2048, 64, 1> v26 = pto::Stride<2048, 2048, 2048, 64, 1>();
-  GlobalTensor<float, pto::Shape<1, 1, 1, 32, 32>, pto::Stride<2048, 2048, 2048, 64, 1>, pto::Layout::ND> v27 = GlobalTensor<float, pto::Shape<1, 1, 1, 32, 32>, pto::Stride<2048, 2048, 2048, 64, 1>, pto::Layout::ND>(v2 + (v6 + v6 * (unsigned) v9 + (unsigned) v24 * (unsigned) v10), v25, v26);
+  int32_t v24 =  subblock_id *  32;
+  using Shape = pto::Shape<1, 1, 1, 32, 32>;
+  using Stride = pto::Stride<2048, 2048, 2048, 64, 1>;
+  GlobalTensor<float, Shape, Stride, pto::Layout::ND> v27(v2 + v24);
     
   TLOAD(v21, v27);
   
-  
-  for (size_t v28 = (size_t) v17; v28 < ((size_t) v8); v28 += (size_t) v10) {
-    std::cout<<"Vec : "<<v18<<"; i="<<v28<<std::endl;
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v29 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
-    TASSIGN(v29, v15);
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v30 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
+  for (size_t i = 0; i < 4; i ++) {
+    std::cout<<"Vec : "<<subblock_id<<"; i="<<i<<std::endl;
+    VecTile v29(32, 32);
+    TASSIGN(v29, 36864);
+    VecTile v30(32, 32);
     __ubuf__ void* v31 = v29.data();
     uint64_t v32 = reinterpret_cast<uint64_t>(v31);
     TASSIGN(v30, v32);
-    pto::Shape<1, 1, 1, 32, 32> v33 = pto::Shape<1, 1, 1, 32, 32>();
-    pto::Stride<16384, 16384, 16384, 512, 1> v34 = pto::Stride<16384, 16384, 16384, 512, 1>();
-    GlobalTensor<float, pto::Shape<1, 1, 1, 32, 32>, pto::Stride<16384, 16384, 16384, 512, 1>, pto::Layout::ND> v35 = GlobalTensor<float, pto::Shape<1, 1, 1, 32, 32>, pto::Stride<16384, 16384, 16384, 512, 1>, pto::Layout::ND>(v1 + (v6 + v6 * (unsigned) v11 + (unsigned) ((int32_t) (uint32_t) ((int32_t) (uint32_t) ((int32_t) (uint32_t) ((int32_t) (uint32_t) v5 * (uint32_t) v8) + (uint32_t) ((int32_t) v28)) * (uint32_t) v9) + (uint32_t) v24) * (unsigned) v10), v33, v34);
+    using Stride2 = pto::Stride<16384, 16384, 16384, 512, 1>;
+    GlobalTensor<float, Shape, Stride2, pto::Layout::ND> v35(v1 + ((((v5 * 4) +  i) *  64) + v24));
     
     TLOAD(v30, v35);
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v36 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
-    TASSIGN(v36, v14);
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v37 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
+    VecTile v36(32, 32);
+    TASSIGN(v36, 40960);
+    VecTile v37(32, 32);
     __ubuf__ void* v38 = v36.data();
     uint64_t v39 = reinterpret_cast<uint64_t>(v38);
     TASSIGN(v37, v39);
     
-    TADDS(v37, v21, v7);
+    TADDS(v37, v21, 1.0f);
     
     
-    TPUSH<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>, TileSplitAxis::TILE_LEFT_RIGHT>(v19, v37);
-    
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v40 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
-    TPOP<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>, TileSplitAxis::TILE_LEFT_RIGHT>(v19, v40);
-    
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v41 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
-    TASSIGN(v41, v13);
-    Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null> v42 = Tile<TileType::Vec, float, 32, 32, BLayout::RowMajor, -1, -1, SLayout::NoneBox, 512, PadValue::Null, CompactMode::Null>(v12, v12);
+    TPUSH<MainPipe, VecTile, TileSplitAxis::TILE_LEFT_RIGHT>(v19, v37);
+    std::cout<<"Vec Push: "<<subblock_id<<"; i="<<i<<std::endl;
+    VecTile v40(32, 32);
+    TPOP<MainPipe, VecTile, TileSplitAxis::TILE_LEFT_RIGHT>(v19, v40);
+    std::cout<<"Vec Pop: "<<subblock_id<<"; i="<<i<<std::endl;
+    VecTile v41(32, 32);
+    TASSIGN(v41, 45056);
+    VecTile v42(32, 32);
     __ubuf__ void* v43 = v41.data();
     uint64_t v44 = reinterpret_cast<uint64_t>(v43);
     TASSIGN(v42, v44);
     
     TADD(v42, v30, v40);
     
-    TFREE<TPipe<0, Direction::DIR_BOTH, 8192, 4, 4, false>, TileSplitAxis::TILE_LEFT_RIGHT>(v19);
+    TFREE<MainPipe, TileSplitAxis::TILE_LEFT_RIGHT>(v19);
     
     TSTORE(v35, v42);
     
