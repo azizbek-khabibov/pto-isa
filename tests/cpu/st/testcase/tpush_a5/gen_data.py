@@ -13,7 +13,7 @@ c_golden = c_prev + np.matmul(a + 1.0, b)
 # Save as raw binary files
 
 
-case_name = "TPUSHTest.case_1"
+case_name = "TPUSH_A5Test.case_1"
 if not os.path.exists(case_name):
     os.makedirs(case_name)
 original_dir = os.getcwd()

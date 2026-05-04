@@ -25,7 +25,7 @@ using namespace PtoTestCommon;
 namespace {
 using T = float;
 
-class TPUSHTest : public testing::Test {
+class TPUSH_A5Test : public testing::Test {
 protected:
     void SetUp() override
     {}
@@ -349,7 +349,7 @@ void test_tpush()
     EXPECT_TRUE(ret);
 }
 
-TEST_F(TPUSHTest, case_1)
+TEST_F(TPUSH_A5Test, case_1)
 {
     test_tpush();
 }
