@@ -151,7 +151,8 @@ set(ALL_TESTCASES
 # tpushpop_cv_nosplit
 # tpushpop_cv
 # tpushpop_vc_nosplit
-tpush_a3
+# tpush_a3
+tpush_a5
 )
 
 foreach(TESTCASE ${ALL_TESTCASES})
