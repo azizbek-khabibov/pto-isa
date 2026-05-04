@@ -52,7 +52,7 @@ static void main_incore_0_aic( float* v1,  float* v2,  float* v3,  void* v4, int
   using Matrix = Tile<TileType::Mat, float, 64, 64, BLayout::ColMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>;
   using TileLeft = Tile<TileType::Left, float, 32, 64, BLayout::RowMajor, -1, -1, SLayout::RowMajor, 512, PadValue::Null, CompactMode::Null>;
   using RightTile = Tile<TileType::Right, float, 64, 64, BLayout::RowMajor, -1, -1, SLayout::ColMajor, 512, PadValue::Null, CompactMode::Null>;
-  for (size_t i = 0; i < 4; i ++) {
+  for (size_t i = 0; i < 8; i ++) {
     std::cout<<"Cube : "<<"; i="<<i<<std::endl;
     Matrix v17(64, 64);
     TASSIGN(v17, 32768);
@@ -113,7 +113,7 @@ static void main_incore_0_aiv( float* v1,  float* v2,  float* v3,  void* v4, int
     
   TLOAD(v21, v27);
   
-  for (size_t i = 0; i < 4; i ++) {
+  for (size_t i = 0; i < 8; i ++) {
     std::cout<<"Vec : "<<subblock_id<<"; i="<<i<<std::endl;
     VecTile v29(32, 32);
     TASSIGN(v29, 36864);
@@ -168,6 +168,7 @@ extern "C" void* GlobalPipeHook(uint64_t key, size_t size) {
 
 
 inline void LaunchTPut(T *out, T *A, T *B, T *C) {
+    size_t v5 = 0;
     std::cout<<"Start"<<std::endl;
     // 1. Allocate and zero the shared synchronization state
     size_t required_size = sizeof(MainPipe::SharedState);
@@ -189,7 +190,7 @@ inline void LaunchTPut(T *out, T *A, T *B, T *C) {
         pto::cpu_sim::ScopedExecutionContext ctx(0, id, 2);
 
         sync_point.arrive_and_wait(); 
-        main_incore_0_aiv(C, A, B, pipe_mem, 0);
+        main_incore_0_aiv(C, A, B, pipe_mem, v5);
     };
 
     auto aic_func = [&]() {
@@ -197,7 +198,7 @@ inline void LaunchTPut(T *out, T *A, T *B, T *C) {
         pto::cpu_sim::ScopedExecutionContext ctx(0, 0, 1);
 
         sync_point.arrive_and_wait(); 
-        main_incore_0_aic(C, A, B, pipe_mem, 0);
+        main_incore_0_aic(C, A, B, pipe_mem, v5);
     };
 
     std::thread v0(aiv_func, 0);
