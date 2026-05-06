@@ -914,7 +914,7 @@ inline void LaunchTPut_C2V_NOSPLIT(T *out, T *A, T *B, T *C) {
         pto::cpu_sim::ScopedExecutionContext ctx(0, id, 1);
 
         sync_point.arrive_and_wait(); 
-        main_incore_0_aiv_C2V_NOSPLIT(C, A, B, v5);
+        main_incore_0_aiv_C2V_NOSPLIT(C, B, A, v5);
     };
 
     auto aic_func = [&]() {
@@ -922,7 +922,7 @@ inline void LaunchTPut_C2V_NOSPLIT(T *out, T *A, T *B, T *C) {
         pto::cpu_sim::ScopedExecutionContext ctx(0, 0, 1);
 
         sync_point.arrive_and_wait(); 
-        main_incore_0_aic_C2V_NOSPLIT(C, A, B, v5);
+        main_incore_0_aic_C2V_NOSPLIT(C, B, A, v5);
     };
 
     std::thread v0(aiv_func, 0);
@@ -1016,10 +1016,10 @@ void test_tpush()
     EXPECT_TRUE(ret);
 }
 
-// TEST_F(TPUSH_A5Test, case_1)
-// {
-//     test_tpush<1>();
-// }
+TEST_F(TPUSH_A5Test, case_1)
+{
+    test_tpush<1>();
+}
 
 // TEST_F(TPUSH_A5Test, case_2)
 // {
