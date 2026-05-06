@@ -1016,10 +1016,10 @@ void test_tpush()
     EXPECT_TRUE(ret);
 }
 
-TEST_F(TPUSH_A5Test, case_1)
-{
-    test_tpush<1>();
-}
+// TEST_F(TPUSH_A5Test, case_1)
+// {
+//     test_tpush<1>();
+// }
 
 // TEST_F(TPUSH_A5Test, case_2)
 // {
@@ -1031,9 +1031,9 @@ TEST_F(TPUSH_A5Test, case_1)
 //     test_tpush<3>();
 // }
 
-// TEST_F(TPUSH_A5Test, case_4)
-// {
-//     test_tpush<4>();
-// }
+TEST_F(TPUSH_A5Test, case_4)
+{
+    test_tpush<4>();
+}
 
 }

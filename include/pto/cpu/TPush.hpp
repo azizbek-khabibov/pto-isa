@@ -46,7 +46,7 @@ enum class TransferDir : uint8_t
 template <typename TileProd>
 PTO_INTERNAL constexpr bool IsC2VProducerTile()
 {
-    return TileProd::Loc == TileType::Acc;
+    return TileProd::Loc == TileType::Acc || TileProd::Loc == TileType::Mat;
 }
 
 template <typename TileProd>
