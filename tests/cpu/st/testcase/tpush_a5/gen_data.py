@@ -25,3 +25,23 @@ c_prev.tofile("c.bin")
 c_golden.tofile("golden.bin")
 
 os.chdir(original_dir)
+
+#------------------------------------------------------
+
+c_golden = c_prev + np.matmul(a, b)
+
+# Save as raw binary files
+
+
+case_name = "TPUSH_A5Test.case_4"
+if not os.path.exists(case_name):
+    os.makedirs(case_name)
+original_dir = os.getcwd()
+os.chdir(case_name)
+
+a.tofile("a.bin")
+b.tofile("b.bin")
+c_prev.tofile("c.bin")
+c_golden.tofile("golden.bin")
+
+os.chdir(original_dir)
