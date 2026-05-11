@@ -228,7 +228,7 @@ if (AUTO_MODE)
     tpushpop_vc_nosplit
     tpushpop_dir_both
     tpushpop_subtile
-  # the following case wait to be fix 
+  # the following case wait to be fix
     tcvt
     ttrans
     ttrans_conv
