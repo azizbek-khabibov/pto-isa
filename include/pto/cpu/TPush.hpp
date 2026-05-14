@@ -18,13 +18,13 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include <cstdint>
 #include <mutex>
 #include <new>
+#include <sstream>
 #include <thread>
 #include <type_traits>
 #ifdef __CPU_SIM
 #include <unordered_map>
 #include <vector>
 #endif
-#include <format>
 #include <pto/common/fifo.hpp>
 
 #include <pto/cpu/TAssign.hpp>
@@ -363,10 +363,11 @@ struct TPipe {
             }
         }
         if (auto hook = cpu_sim::ResolveSharedStorageHook(); hook != nullptr) {
-            char key[128] = {};
-            std::format_to(key, "pto-pipe-%llu-%u-%u-%u-%u-%u-%u", static_cast<unsigned long long>(get_task_cookie()),
-                           get_block_idx(), FlagID, DirType, SlotSize, SlotNum, LocalSlotNum);
-            auto *storage = reinterpret_cast<SharedStateStorage *>(hook(key, sizeof(SharedStateStorage)));
+            std::stringstream ss;
+            ss << "pto-pipe-" << static_cast<unsigned long long>(get_task_cookie()) << "-" << get_block_idx() << "-"
+               << static_cast<uint32_t>(FlagID) << "-" << static_cast<uint32_t>(DirType) << "-" << SlotSize << "-"
+               << SlotNum << "-" << LocalSlotNum;
+            auto *storage = reinterpret_cast<SharedStateStorage *>(hook(ss.str().c_str(), sizeof(SharedStateStorage)));
             EnsureSharedStateInitialized(*storage);
             return *std::launder(reinterpret_cast<SharedState *>(storage->payload));
         }
