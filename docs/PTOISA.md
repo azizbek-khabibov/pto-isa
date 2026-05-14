@@ -124,6 +124,7 @@ This page is the source-synchronized ISA index generated from `docs/isa/manifest
 | Data Movement / Layout | [`TMOV_FP`](isa/tile/ops/layout-and-rearrangement/tmov.md) | Move/convert from an accumulator tile into a destination tile, using a scaling (`fp`) tile for vector quantization parameters. |
 | Data Movement / Layout | [`TRESHAPE`](isa/tile/ops/layout-and-rearrangement/treshape.md) | Reinterpret a tile as another tile type/shape while preserving the underlying bytes. |
 | Data Movement / Layout | [`TTRANS`](isa/tile/ops/layout-and-rearrangement/ttrans.md) | Transpose with an implementation-defined temporary tile. |
+| Data Movement / Layout | [`TCONCAT`](isa/tile/ops/layout-and-rearrangement/tconcat.md) | Concatenate two tiles horizontally along the column dimension. |
 | Data Movement / Layout | [`TSUBVIEW`](isa/tile/ops/sync-and-config/subview.md) | Reinterpret a tile as a subtile of another tile. |
 | Data Movement / Layout | [`TGET_SCALE_ADDR`](isa/tile/ops/sync-and-config/get-scale-addr.md) | Bind the on-chip address of output tile to a scaled factor of that of input tile. |
 | Complex | [`TPRINT`](isa/tile/ops/irregular-and-complex/tprint.md) | Debug/print elements from a tile (implementation-defined). |

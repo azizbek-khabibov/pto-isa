@@ -124,6 +124,7 @@
 | 数据搬运 / 布局 | [`TMOV_FP`](isa/tile/ops/layout-and-rearrangement/tmov_zh.md) | 使用缩放 (`fp`) Tile 作为向量量化参数，将累加器 Tile 移动/转换到目标 Tile。 |
 | 数据搬运 / 布局 | [`TRESHAPE`](isa/tile/ops/layout-and-rearrangement/treshape_zh.md) | 将 Tile 重新解释为另一种 Tile 类型/形状，同时保留底层字节。 |
 | 数据搬运 / 布局 | [`TTRANS`](isa/tile/ops/layout-and-rearrangement/ttrans_zh.md) | 使用实现定义的临时 Tile 进行转置。 |
+| 数据搬运 / 布局 | [`TCONCAT`](isa/tile/ops/layout-and-rearrangement/tconcat_zh.md) | 将两个 Tile 沿列维度水平拼接。 |
 | 数据搬运 / 布局 | [`TSUBVIEW`](isa/tile/sync-and-config_zh.md) | 表达一个tile是另一个tile的subview |
 | 数据搬运 / 布局 | [`TGET_SCALE_ADDR`](isa/tile/sync-and-config_zh.md) | 将输出tile的片上内存值绑定为扩展后的输入tile内存的值。 |
 | 复杂指令 | [`TPRINT`](isa/tile/ops/irregular-and-complex/tprint_zh.md) | 调试/打印 Tile 中的元素（实现定义）。 |

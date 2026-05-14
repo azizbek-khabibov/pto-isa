@@ -1316,6 +1316,19 @@
       "notes": []
     },
     {
+      "instruction": "TCONCAT",
+      "category": "Data Movement / Layout",
+      "summary_en": "Concatenate two tiles horizontally along the column dimension.",
+      "summary_zh": "将两个 Tile 沿列维度水平拼接。",
+      "diagram_template": "reshape_move",
+      "operands": [
+        "dst",
+        "src0",
+        "src1"
+      ],
+      "notes": []
+    },
+    {
       "instruction": "TSUBVIEW",
       "category": "Manual / Resource Binding",
       "summary_en": "Reinterpret a tile as a subtile of another tile.",
