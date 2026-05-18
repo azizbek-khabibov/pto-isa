@@ -15,6 +15,7 @@ site_zh/
 *.o
 output/
 __pycache__/
+kernels/python/flash_atten/build_artifacts/
 *.log
 *.swp
 *.pdf
