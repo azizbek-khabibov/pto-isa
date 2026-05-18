@@ -101,6 +101,7 @@
 | 轴归约 / 扩展 | [`TCOLEXPANDEXPDIF`](isa/tile/ops/reduce-and-expand/tcolexpandexpdif_zh.md) | 列指数差运算：计算 exp(src0 - src1)，其中 src1 为每列标量。 |
 | 内存（GM <-> Tile） | [`TLOAD`](isa/tile/ops/memory-and-data-movement/tload_zh.md) | 从 GlobalTensor (GM) 加载数据到 Tile。 |
 | 内存（GM <-> Tile） | [`TPREFETCH`](isa/tile/ops/memory-and-data-movement/tprefetch_zh.md) | 将数据从全局内存预取到 Tile 本地缓存/缓冲区（提示）。 |
+| 内存（GM <-> Tile） | [`TPREFETCH_ASYNC`](isa/tile/ops/memory-and-data-movement/tprefetch-async_zh.md) | 通过 SDMA CMO 将 GlobalTensor 区域从 GM 异步预取到 L2 Cache。 |
 | 内存（GM <-> Tile） | [`TSTORE`](isa/tile/ops/memory-and-data-movement/tstore_zh.md) | 将 Tile 中的数据存储到 GlobalTensor (GM)，可选使用原子写入或量化参数。 |
 | 内存（GM <-> Tile） | [`TSTORE_FP`](isa/tile/ops/memory-and-data-movement/tstore_zh.md) | 使用缩放 (`fp`) Tile 作为向量量化参数，将累加器 Tile 存储到全局内存。 |
 | 内存（GM <-> Tile） | [`MGATHER`](isa/tile/ops/memory-and-data-movement/mgather_zh.md) | 使用逐元素索引从全局内存收集加载元素到 Tile 中。 |

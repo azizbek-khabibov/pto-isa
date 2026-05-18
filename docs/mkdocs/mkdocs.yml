@@ -221,6 +221,7 @@ nav:
               - Instruction Set Contract: docs/isa/tile/memory-and-data-movement.md
               - pto.tload: docs/isa/tile/ops/memory-and-data-movement/tload.md
               - pto.tprefetch: docs/isa/tile/ops/memory-and-data-movement/tprefetch.md
+              - pto.tprefetch_async: docs/isa/tile/ops/memory-and-data-movement/tprefetch-async.md
               - pto.tstore: docs/isa/tile/ops/memory-and-data-movement/tstore.md
               - pto.mgather: docs/isa/tile/ops/memory-and-data-movement/mgather.md
               - pto.mscatter: docs/isa/tile/ops/memory-and-data-movement/mscatter.md

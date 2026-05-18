@@ -101,6 +101,7 @@ This page is the source-synchronized ISA index generated from `docs/isa/manifest
 | Axis Reduce / Expand | [`TCOLEXPANDEXPDIF`](isa/tile/ops/reduce-and-expand/tcolexpandexpdif.md) | Column-wise exp-diff: compute exp(src0 - src1) with per-column scalars. |
 | Memory (GM <-> Tile) | [`TLOAD`](isa/tile/ops/memory-and-data-movement/tload.md) | Load data from a GlobalTensor (GM) into a Tile. |
 | Memory (GM <-> Tile) | [`TPREFETCH`](isa/tile/ops/memory-and-data-movement/tprefetch.md) | Prefetch data from global memory into a tile-local cache/buffer (hint). |
+| Memory (GM <-> Tile) | [`TPREFETCH_ASYNC`](isa/tile/ops/memory-and-data-movement/tprefetch-async.md) | Asynchronously prefetch a GlobalTensor region from GM into L2 cache via SDMA CMO. |
 | Memory (GM <-> Tile) | [`TSTORE`](isa/tile/ops/memory-and-data-movement/tstore.md) | Store data from a Tile into a GlobalTensor (GM), optionally using atomic write or quantization parameters. |
 | Memory (GM <-> Tile) | [`TSTORE_FP`](isa/tile/ops/memory-and-data-movement/tstore.md) | Store an accumulator tile into global memory using a scaling (`fp`) tile for vector quantization parameters. |
 | Memory (GM <-> Tile) | [`MGATHER`](isa/tile/ops/memory-and-data-movement/mgather.md) | Gather-load elements from global memory into a tile using per-element indices. |
