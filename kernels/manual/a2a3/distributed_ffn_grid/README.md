@@ -93,7 +93,7 @@ All cells run on one device. `gridRows` controls data-parallel token tiles, and 
 
 ### Local GridPipe mock
 
-The host allocates `gridRows * gridCols` local SRAM windows, backed by GM in the mock. `TPUSH<EAST>` resolves the east neighbor's Vector UB slot with `get_neighbor_ubuf_addr`, writes the payload, then publishes the ready counter; `TPOP<EAST>` waits on the local ready counter, loads the local UB slot, and returns free credit to the west neighbor.
+The host allocates `gridRows * gridCols` local SRAM windows, backed by GM in the mock. `TPUSH<EAST>` resolves the east neighbor's SRAM slot with `get_neighbor_sram_addr`, writes the payload, then publishes the ready counter; `TPOP<EAST>` waits on the local ready counter, loads the local SRAM slot, and returns free credit to the west neighbor.
 
 The mock uses GM flag polling and cache maintenance to emulate the intended LPU WSE `SPR` / `WFE` behavior on A2/A3.
 
@@ -106,12 +106,11 @@ GridPipe ready/free synchronization goes through two CCE-intrinsic-style APIs in
 
 GridPipe payload address resolution goes through `include/pto/common/grid_sram_intrinsic.hpp`:
 
-- `get_neighbor_ubuf_addr(dst, src, dir, peerRank, operand)` / `get_neighbor_cbuf_addr(dst, src, dir, peerRank, operand)` resolve a local slot offset to a neighbor Vector UB or Cube L1/CBUF address register.
-- `copy_ubuf_to_neighbor_ubuf(dst, src, bytes, config)` / `copy_ubuf_to_neighbor_cbuf(dst, src, bytes, config)` write Vector UB payloads to a neighbor Vector UB or Cube L1 slot.
-- `copy_cbuf_to_neighbor_ubuf(dst, src, bytes, config)` / `copy_cbuf_to_neighbor_cbuf(dst, src, bytes, config)` write Cube L1 payloads to a neighbor Vector UB or Cube L1 slot.
-- `copy_neighbor_ubuf_to_ubuf(dst, src, bytes, config)` is the A2/A3 mock TPOP-side load from the local GM-backed slot into the consumer Vector UB tile; native Grid TPOP is expected to bind the local slot through hardware SRAM addressing instead.
+- `get_neighbor_sram_addr(dst, src, dir, peerRank, operand)` resolves a local slot offset to the same offset in a neighbor SRAM slot address register.
+- `copy_sram_to_neighbor_sram(dst, src, bytes, config)` writes local SRAM payloads to a neighbor SRAM slot.
+- `copy_neighbor_sram_to_sram(dst, src, bytes, config)` is the read-side interface counterpart. Native lowering is intentionally only an interface placeholder for now; the A2/A3 mock uses it for TPOP-side validation against the GM-backed slot.
 
-The current A2/A3 mock implements UB-source paths with MTE copies through the GM-backed fake window. CBUF-source paths use existing `copy_cbuf_to_gm` to write into the GM-backed fake window. Once native hardware provides the corresponding builtins, GridPipe call sites do not need to change.
+The current A2/A3 mock implements the SRAM write/read path with MTE copies through the GM-backed fake window. Once native hardware provides the corresponding write builtin, GridPipe call sites do not need to change.
 
 `TPUSH<EAST>` waits on `Free` with `wfe_neighbor_counter`, writes the payload slot, then publishes `Ready` with `mtspr_neighbor_counter`. `TPOP<EAST>` waits on `Ready`, reads the payload slot, then publishes `Free` back upstream.
 

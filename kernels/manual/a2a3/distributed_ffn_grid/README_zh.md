@@ -93,7 +93,7 @@ col  = cell % gridCols
 
 ### 3. 本地 GridPipe mock
 
-host 分配 `gridRows * gridCols` 个本地 SRAM windows（当前由 GM backing）。`TPUSH<EAST>` 通过 `get_neighbor_ubuf_addr` 解析 east neighbor 的 Vector UB slot 后写入 payload，再发布 ready counter；`TPOP<EAST>` 等待本地 ready counter、读取本地 UB slot，并向 west neighbor 归还 free credit。
+host 分配 `gridRows * gridCols` 个本地 SRAM windows（当前由 GM backing）。`TPUSH<EAST>` 通过 `get_neighbor_sram_addr` 解析 east neighbor 的 SRAM slot 后写入 payload，再发布 ready counter；`TPOP<EAST>` 等待本地 ready counter、读取本地 SRAM slot，并向 west neighbor 归还 free credit。
 
 mock 使用 GM flag polling 和 cache maintenance 在 A2/A3 上模拟 LPU WSE 预期的 `SPR` / `WFE` 行为。
 
@@ -106,12 +106,11 @@ GridPipe 的 ready/free 同步统一经过 `include/pto/common/grid_counter_intr
 
 GridPipe payload 的远端 SRAM 地址解析统一经过 `include/pto/common/grid_sram_intrinsic.hpp`：
 
-- `get_neighbor_ubuf_addr(dst, src, dir, peerRank, operand)` / `get_neighbor_cbuf_addr(dst, src, dir, peerRank, operand)`：将本地 slot offset 解析为邻居 Vector UB 或 Cube L1/CBUF slot 地址寄存器。
-- `copy_ubuf_to_neighbor_ubuf(dst, src, bytes, config)` / `copy_ubuf_to_neighbor_cbuf(dst, src, bytes, config)`：Vector UB 到邻居 Vector UB 或 Cube L1 的写入接口。
-- `copy_cbuf_to_neighbor_ubuf(dst, src, bytes, config)` / `copy_cbuf_to_neighbor_cbuf(dst, src, bytes, config)`：Cube L1 到邻居 Vector UB 或 Cube L1 的写入接口。
-- `copy_neighbor_ubuf_to_ubuf(dst, src, bytes, config)`：A2/A3 mock 中 TPOP 侧从本地 GM-backed slot 加载到 consumer Vector UB tile 的接口；native Grid TPOP 预期通过硬件 SRAM 地址机制绑定本地 slot。
+- `get_neighbor_sram_addr(dst, src, dir, peerRank, operand)`：将本地 slot offset 解析为邻居 SRAM slot 地址寄存器。
+- `copy_sram_to_neighbor_sram(dst, src, bytes, config)`：本核 SRAM 到邻居核 SRAM 的写入接口，不再区分 UB/CBUF。
+- `copy_neighbor_sram_to_sram(dst, src, bytes, config)`：对应的跨核读接口。native lowering 当前仅提供接口占位；A2/A3 mock 用它做 TPOP 侧 GM-backed slot 校验。
 
-当前 A2/A3 mock 中，UB 源路径通过 GM-backed fake window 上的 MTE 搬运实现；`__cbuf__` 源路径通过现有 `copy_cbuf_to_gm` 写入 GM-backed fake window。native 硬件提供对应 builtin 后，上层 GridPipe 调用点不需要修改。
+当前 A2/A3 mock 中，SRAM 写入/读取路径通过 GM-backed fake window 上的 MTE 搬运实现。native 硬件提供对应写 builtin 后，上层 GridPipe 调用点不需要修改。
 
 `TPUSH<EAST>` 先用 `wfe_neighbor_counter` 等待 `Free` credit，写 payload slot，然后用 `mtspr_neighbor_counter` 发布 `Ready`。`TPOP<EAST>` 先等待 `Ready`，读取 payload slot，再向上游发布 `Free`。
 
