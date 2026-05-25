@@ -30,6 +30,7 @@ See LICENSE in the root of the software repository for the full text of the Lice
 #include <cstdio>
 #include <dlfcn.h>
 #include "pto/common/type.hpp"
+#include <string>
 
 #define __global__
 #define AICORE
@@ -153,7 +154,7 @@ inline const auto g_time_origin = std::chrono::steady_clock::now();
 
 using SetExecutionContextHookFn = void (*)(uint32_t block_idx, uint32_t subblock_id, uint32_t subblock_dim);
 using GetExecutionContextHookFn = void (*)(uint32_t *block_idx, uint32_t *subblock_id, uint32_t *subblock_dim);
-using GetSharedStorageHookFn = void *(*)(const char *key, size_t size);
+using GetSharedStorageHookFn = void *(*)(std::string key, size_t size);
 using GetTaskCookieHookFn = uint64_t (*)();
 using GetSubblockIdInjectedHookFn = uint32_t (*)();
 using GetPipeSharedStateInjectedHookFn = void *(*)(uint64_t pipe_key, size_t size);
