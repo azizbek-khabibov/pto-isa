@@ -87,6 +87,24 @@ PTO_INTERNAL void CheckRowArgTiles(TileDst &dstIdx, TileSrc &src)
 }
 
 template <typename TileDstVal, typename TileDstIdx, typename TileSrc>
+PTO_INTERNAL void CheckColArgTiles(TileDstVal &dstVal, TileDstIdx &dstIdx, TileSrc &src)
+{
+    CheckColArgTiles(dstIdx, src);
+    static_assert(std::is_same_v<typename TileDstVal::DType, typename TileSrc::DType>,
+                  "TColArgMin(Max): The data type of dstVal and src must match");
+
+    static_assert(TileDstVal::Loc == TileType::Vec,
+                  "TColArgMin(Max): TileType of dstVal tiles must be `TileType::Vec`.");
+    static_assert(TileDstVal::isRowMajor && TileDstVal::SFractal == SLayout::NoneBox,
+                  "TColArgMin(Max): `dstVal` must use standard ND layout: row-major and non-fractal");
+
+    PTO_ASSERT(dstVal.GetValidRow() == dstIdx.GetValidRow(),
+               "Number of rows of dstVal and dstIdx must be the same.");
+    PTO_ASSERT(dstVal.GetValidCol() == dstIdx.GetValidCol(),
+               "Number of cols of dstVal and dstIdx must be the same.");
+}
+
+template <typename TileDstVal, typename TileDstIdx, typename TileSrc>
 PTO_INTERNAL void CheckRowArgTiles(TileDstVal &dstVal, TileDstIdx &dstIdx, TileSrc &src)
 {
     CheckRowArgTiles(dstIdx, src);
@@ -127,7 +145,7 @@ PTO_INTERNAL void TColReduceIdxImpl(TileDst &dstIdx, TileSrc &src)
 template <typename TileDstVal, typename TileDstIdx, typename TileSrc, ElementCmp cmp>
 PTO_INTERNAL void TColReduceValImpl(TileDstVal &dstVal, TileDstIdx &dstIdx, TileSrc &src)
 {
-    CheckRowArgTiles(dstVal, dstIdx, src);
+    CheckColArgTiles(dstVal, dstIdx, src);
     using T = typename TileSrc::DType;
     using TIdx = typename TileDstIdx::DType;
 
