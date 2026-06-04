@@ -123,6 +123,31 @@ No architectural side effects beyond producing the destination tile. Does not im
 
     In this checkout, the fp16 → int8 non-saturating path is explicitly implemented through helper logic that may require temporary storage and row-aware sub-chunking.
 
+## Supported Conversions
+
+| Source Type | A2A3 Destinations | A5 Destinations | Difference |
+|---|---|---|---|
+| FP32 | FP16, FP32 (round-only), BF16, I16, I32, I64 | FP32, FP16, BF16, I16, I32, I64, FP8_E4M3, FP8_E5M2, H8 | A5 adds FP8/H8 targets |
+| FP16 | FP32, I32, I16, I8, U8, S4 (int4b_t) | FP32, I32, I16, I8, U8, H8 | A2A3 has S4 path; A5 has H8 path |
+| BF16 | FP32, I32 | FP32, I32, FP16, FP4_E1M2X2, FP4_E2M1X2 | A5 adds FP16/FP4 targets |
+| I16 | FP16, FP32 | U8, FP16, FP32, U32, I32 | A5 adds U8/U32/I32 targets |
+| I32 | FP32, I16, I64, FP16 (deq path) | FP32, I16, U16, I64, U8 | A2A3 supports I32 -> FP16 (half, deq); A5 does not |
+| I64 | FP32, I32 | FP32, I32 | Same |
+| U8 | FP16 | FP16, U16 | A5 adds U16 target |
+| I8 | FP16 | FP16, I16, I32 | A5 adds I16/I32 targets |
+| S4 (int4b_t) | FP16 | N/A | A2A3-only |
+| U32 | N/A | U8, U16, I16 | A5-only source type |
+| FP8_E4M3 | N/A | FP32 | A5-only source type |
+| FP8_E5M2 | N/A | FP32 | A5-only source type |
+| H8 | N/A | FP32 | A5-only source type |
+| FP4_E1M2X2 | N/A | BF16 | A5-only source type |
+| FP4_E2M1X2 | N/A | BF16 | A5-only source type |
+
+Notes:
+
+- A2A3 supports I32 -> FP16 through the half dequantization path; A5 does not support I32 -> FP16.
+- A5 does not support FP16 -> FP8_E4M3 or FP16 -> FP8_E5M2.
+
 ## Examples
 
 ### Auto
