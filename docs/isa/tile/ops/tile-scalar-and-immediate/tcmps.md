@@ -4,15 +4,22 @@
 
 ## Summary
 
-Compare a tile against a scalar and write per-element comparison results.
+Compare a tile against a scalar or against the first element of another tile and write per-element
+comparison results.
 
 ## Mechanism
 
-Compare a tile against a scalar and write per-element comparison results. It operates on tile payloads rather than scalar control state, and its legality is constrained by tile shape, layout, valid-region, and target-profile support.
+Compare a tile against a scalar or against the first element of another tile and write per-element
+comparison results. It operates on tile payloads rather than scalar control state, and its legality is
+constrained by tile shape, layout, valid-region, and target-profile support.
 
-For each element `(i, j)` in the valid region:
+Scalar form, for each element `(i, j)` in the valid region:
 
-$$ \mathrm{dst}_{i,j} = \left(\mathrm{src}_{i,j}\ \mathrm{cmpMode}\ \mathrm{scalar}\right) $$
+$$ \mathrm{dst}_{i,j} = \left(\mathrm{src0}_{i,j}\ \mathrm{cmpMode}\ \mathrm{scalar}\right) $$
+
+Tile form, for each element `(i, j)` in the valid region:
+
+$$ \mathrm{dst}_{i,j} = \left(\mathrm{src0}_{i,j}\ \mathrm{cmpMode}\ \mathrm{src1}_{0,0}\right) $$
 
 The encoding/type of `dst` is target-specific: on A2/A3 the predicate tile uses `uint8_t` with 1 bit per element (packed 8 elements per byte), and on A5 it uses `uint32_t` with 1 bit per element (packed 32 elements per DWORD).
 
@@ -57,12 +64,17 @@ Declared in `include/pto/common/pto_instr.hpp` and `include/pto/common/type.hpp`
 ```cpp
 template <typename TileDataDst, typename TileDataSrc0, typename T, typename... WaitEvents>
 PTO_INST RecordEvent TCMPS(TileDataDst& dst, TileDataSrc0& src0, T src1, CmpMode cmpMode, WaitEvents&... events);
+
+template <typename TileDataDst, typename TileDataSrc0, typename TileDataSrc1, typename... WaitEvents>
+PTO_INST RecordEvent TCMPS(TileDataDst& dst, TileDataSrc0& src0, TileDataSrc1& src1,
+                           CmpMode cmpMode, WaitEvents&... events);
 ```
 
 ## Inputs
 
-- `src` is the source tile.
+- `src0` is the source tile.
 - `scalar` is the scalar value broadcast to all lanes; `cmpMode` selects comparison predicate.
+- `src1` is the optional tile operand for the tile form; `src1[0,0]` is broadcast as the comparison scalar.
 - `dst` names the destination predicate tile.
 - The operation iterates over `dst`'s valid region.
 
@@ -81,6 +93,7 @@ No architectural side effects beyond producing the destination tile. Does not im
         - Tile location must be vector (`TileData::Loc == TileType::Vec`).
         - Static valid bounds: `TileData::ValidRow <= TileData::Rows` and `TileData::ValidCol <= TileData::Cols`.
         - Runtime: `src0` and `dst` must have the same valid row/col.
+        - Tile form: `src0` and `src1` must have the same data type.
 
     - **Valid region**:
         - The op uses `dst.GetValidRow()` / `dst.GetValidCol()` as the iteration domain.
@@ -100,9 +113,11 @@ No architectural side effects beyond producing the destination tile. Does not im
     - **Implementation checks (A2A3)**:
         - `TileData::DType` must be one of: `int32_t`, `float`, `half`, `uint16_t`, `int16_t`.
         - Tile layout must be row-major (`TileData::isRowMajor`).
+        - For `int32_t` input, only `CmpMode::EQ` is supported; other comparison modes fall back to `EQ`.
 
     - **Implementation checks (A5)**:
-        - `TileData::DType` must be one of: `int32_t`, `float`, `half`, `uint16_t`, `int16_t`.
+        - `TileData::DType` must be one of: `int32_t`, `uint32_t`, `float`, `int16_t`, `uint16_t`, `half`,
+          `uint8_t`, `int8_t`.
         - Tile layout must be row-major (`TileData::isRowMajor`).
 
 ## Examples
@@ -138,6 +153,22 @@ void example_manual() {
   TASSIGN(src, 0x1000);
   TASSIGN(dst, 0x2000);
   TCMPS(dst, src, 0.0f, CmpMode::GT);
+}
+```
+
+### Tile Form
+
+```cpp
+#include <pto/pto-inst.hpp>
+
+using namespace pto;
+
+void example_tile() {
+  using SrcT = Tile<TileType::Vec, float, 16, 16>;
+  using DstT = Tile<TileType::Vec, uint8_t, 16, 32, BLayout::RowMajor, -1, -1>;
+  SrcT src0, src1;
+  DstT dst(16, 2);
+  TCMPS(dst, src0, src1, CmpMode::GE);
 }
 ```
 
