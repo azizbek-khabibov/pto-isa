@@ -8,11 +8,31 @@ Row-wise broadcast multiply: multiply each row of `src0` by a per-row scalar vec
 
 ## Mechanism
 
-Row-wise broadcast multiply: multiply each row of `src0` by a per-row scalar vector `src1`.
+Row-wise broadcast multiply: multiply each row of `src0` by a per-row broadcast operand.
 
-For each element `(i, j)` in the valid region:
+### Mode 1 — Scalar per row (ColMajor expanded operand)
 
-$$ \mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} \cdot \mathrm{src1}_{0,i} $$
+![TROWEXPANDMUL Mode 1 tile operation](../../../../figures/isa/TROWEXPANDMUL.svg)
+
+Let `R = dst.GetValidRow()` and `C = dst.GetValidCol()`. Let `s_i` be the per-row scalar taken from the expanded operand.
+
+For `0 <= i < R` and `0 <= j < C`:
+
+$$
+\mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} \cdot s_i
+$$
+
+### Mode 2 — 32-byte block per row (RowMajor expanded operand)
+
+![TROWEXPANDMUL Mode 2 tile operation](../../../../figures/isa/TROWEXPANDMUL_mode2.svg)
+
+Let `b_i` be the 32-byte block for row `i` taken from the expanded operand. The block contains `32 / sizeof(T)` values and repeats across the row.
+
+For `0 <= i < R` and `0 <= j < C`:
+
+$$
+\mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} \cdot b_i[\,j \bmod (32 / \mathit{sizeof}(T))\,]
+$$
 
 ## Syntax
 
@@ -67,9 +87,21 @@ No architectural side effects beyond producing the destination tile. Does not im
 ## Constraints
 
 !!! warning "Constraints"
-    - Source and destination shapes, layouts, and element types MUST satisfy the legality rules documented by the instruction set and target profile.
+    - `TileDataDst::DType == TileDataSrc0::DType == TileDataSrc1::DType`.
 
-    - Programs must not assume implicit broadcasting, reshaping, or valid-region repair unless the operation documents it.
+    - `TileDataDst::DType`, `TileDataSrc0::DType`, and `TileDataSrc1::DType` must be one of: `half`, `float`, `int16`, `int32`, `uint16`, or `uint32`.
+
+    - `TileDataDst` must be RowMajor.
+
+    - Exactly one of `src0` or `src1` must have the same valid shape as `dst`. That operand is the full-sized operand; the other operand is the expanded row-broadcast operand.
+
+    - The full-sized operand must be RowMajor.
+
+    - Mode 1: the expanded operand is ColMajor, has valid column count 1, and has valid row count equal to `dst.GetValidRow()`.
+
+    - Mode 2: the expanded operand is RowMajor, has valid row count equal to `dst.GetValidRow()`, and has valid column count `32 / sizeof(T)`: 16 for 16-bit types and 8 for 32-bit types.
+
+    - Exact layout, fractal, and alignment constraints are target-specific; see backend headers under `include/pto/npu/*/TRowExpand*.hpp`.
 
 ## Exceptions
 

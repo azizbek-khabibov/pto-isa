@@ -8,11 +8,31 @@
 
 ## 机制
 
-设 `R = dst.GetValidRow()`、`C = dst.GetValidCol()`。记 `s_i` 为第 `i` 行对应的广播标量。则：
+逐行广播减法：从 `src0` 的每一行元素中减去逐行广播操作数。
 
-$$ \mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} - s_i $$
+### Mode 1 — 每行一个标量（ColMajor 扩展操作数）
 
-这里的 `src1` 在语义上承担“每行一个标量”的角色。
+![TROWEXPANDSUB Mode 1 tile operation](../../../../figures/isa/TROWEXPANDSUB.svg)
+
+令 `R = dst.GetValidRow()`，`C = dst.GetValidCol()`。令 `s_i` 为扩展操作数中第 `i` 行对应的标量。
+
+对 `0 <= i < R` 且 `0 <= j < C`：
+
+$$
+\mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} - s_i
+$$
+
+### Mode 2 — 每行 32 字节块（RowMajor 扩展操作数）
+
+![TROWEXPANDSUB Mode 2 tile operation](../../../../figures/isa/TROWEXPANDSUB_mode2.svg)
+
+令 `b_i` 为扩展操作数中第 `i` 行对应的 32 字节数据块。该数据块包含 `32 / sizeof(T)` 个元素，并在行内重复使用。
+
+对 `0 <= i < R` 且 `0 <= j < C`：
+
+$$
+\mathrm{dst}_{i,j} = \mathrm{src0}_{i,j} - b_i[\,j \bmod (32 / \mathit{sizeof}(T))\,]
+$$
 
 ## 语法
 
@@ -63,9 +83,21 @@ PTO_INST RecordEvent TROWEXPANDSUB(TileDataDst &dst, TileDataSrc0 &src0, TileDat
 ## 约束
 
 !!! warning "约束"
-    - `dst/src0/src1` 的元素类型必须一致，当前实现只支持 `half` 或 `float`
-    - `dst` 必须是 row-major
-    - `src1` 需要表达“每行一个标量”这一角色
+    - `TileDataDst::DType == TileDataSrc0::DType == TileDataSrc1::DType`。
+
+    - `TileDataDst::DType`、`TileDataSrc0::DType` 和 `TileDataSrc1::DType` 必须是以下类型之一：`half`、`float`、`int16`、`int32`、`uint16` 或 `uint32`。
+
+    - `TileDataDst` 必须是 RowMajor。
+
+    - `src0` 和 `src1` 中必须恰好有一个操作数的有效形状与 `dst` 相同。该操作数是完整尺寸操作数；另一个操作数是逐行广播的扩展操作数。
+
+    - 完整尺寸操作数必须是 RowMajor。
+
+    - Mode 1：扩展操作数为 ColMajor，有效列数为 1，有效行数等于 `dst.GetValidRow()`。
+
+    - Mode 2：扩展操作数为 RowMajor，有效行数等于 `dst.GetValidRow()`，有效列数为 `32 / sizeof(T)`：16 位类型为 16，32 位类型为 8。
+
+    - 精确的布局、fractal 和对齐约束与目标后端有关；请参见 `include/pto/npu/*/TRowExpand*.hpp` 下的后端头文件。
 
 ## 异常与非法情形
 
