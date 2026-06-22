@@ -224,7 +224,7 @@ public:
     template <typename TileDef>
     std::uintptr_t NormalizeAssignedAddress(std::uintptr_t addr)
     {
-        static_assert(is_tile_data_v<TileDef>);
+        static_assert(is_tile_data_v<TileDef> || is_conv_tile_v<TileDef>);
         EnsureInitialized();
 
         const int region = GetRegionForTile<TileDef>();
