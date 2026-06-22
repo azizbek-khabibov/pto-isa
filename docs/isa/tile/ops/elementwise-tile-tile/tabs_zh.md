@@ -76,7 +76,8 @@ PTO_INST RecordEvent TABS(TileDataDst &dst, TileDataSrc &src, WaitEvents &... ev
 
 ### NPU
 
-- 当前实现只记录 `float` / `half`
+- A3 支持类型：`float`、`half`
+- A5 支持类型：`int32_t`、`int16_t`、`int8_t`、`half`、`float`
 - tile 必须是行主序向量 tile
 - 静态 valid 边界必须合法
 - 运行时要求：`src.GetValidRow() == dst.GetValidRow()` 且 `src.GetValidCol() == dst.GetValidCol()`
