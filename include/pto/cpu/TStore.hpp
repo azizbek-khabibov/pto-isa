@@ -250,30 +250,16 @@ PTO_INTERNAL void TSTORE_IMPL(GlobalData &dst, TileData &src, const std::vector<
     }
 }
 
-template <typename TileData, typename GlobalData, AtomicType atomicType>
+template <typename TileData, typename GlobalData, AtomicType atomicType, STPhase Phase = STPhase::Unspecified>
 PTO_INTERNAL void TSTORE_IMPL(GlobalData &dst, TileData &src)
 {
-    constexpr bool atomicAdd = (atomicType == AtomicType::AtomicAdd);
-    TSTORE_IMPL<TileData, GlobalData, QuantModeCPU_t::NoQuant, false, atomicAdd>(dst, src);
-}
-
-template <typename TileData, typename GlobalData, AtomicType atomicType, STPhase Phase>
-__aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src)
-{
     (void)Phase;
     constexpr bool atomicAdd = (atomicType == AtomicType::AtomicAdd);
     TSTORE_IMPL<TileData, GlobalData, QuantModeCPU_t::NoQuant, false, atomicAdd>(dst, src);
 }
 
-template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode>
-__aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src)
-{
-    constexpr bool useRelu = reluPreMode == ReluPreMode::NormalRelu;
-    constexpr bool atomicAdd = (atomicType == AtomicType::AtomicAdd);
-    TSTORE_IMPL<TileData, GlobalData, QuantModeCPU_t::NoQuant, useRelu, atomicAdd>(dst, src);
-}
-
-template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode, STPhase Phase>
+template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode,
+          STPhase Phase = STPhase::Unspecified>
 __aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src)
 {
     (void)Phase;
@@ -282,9 +268,11 @@ __aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src)
     TSTORE_IMPL<TileData, GlobalData, QuantModeCPU_t::NoQuant, useRelu, atomicAdd>(dst, src);
 }
 
-template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode>
+template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode,
+          STPhase Phase = STPhase::Unspecified>
 __aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src, uint64_t preQuantScalar)
 {
+    (void)Phase;
     constexpr QuantModeCPU_t quantPre = GetScalarPreQuantMode<typename TileData::DType, typename GlobalData::DType>();
     constexpr bool useRelu = reluPreMode == ReluPreMode::NormalRelu;
     constexpr bool atomicAdd = (atomicType == AtomicType::AtomicAdd);
@@ -298,16 +286,11 @@ __aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src, uint64_t preQuantSca
     TSTORE_IMPL<TileData, GlobalData, quantPre, useRelu, atomicAdd>(dst, src, scalars);
 }
 
-template <typename TileData, typename GlobalData, AtomicType atomicType, ReluPreMode reluPreMode, STPhase Phase>
-__aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src, uint64_t preQuantScalar)
-{
-    (void)Phase;
-    TSTORE_IMPL<TileData, GlobalData, atomicType, reluPreMode>(dst, src, preQuantScalar);
-}
-
-template <typename TileData, typename GlobalData, typename FpTileData, AtomicType atomicType, ReluPreMode reluPreMode>
+template <typename TileData, typename GlobalData, typename FpTileData, AtomicType atomicType, ReluPreMode reluPreMode,
+          STPhase Phase = STPhase::Unspecified>
 __aicore__ void TSTORE_IMPL(GlobalData &dst, TileData &src, FpTileData &fp)
 {
+    (void)Phase;
     constexpr QuantModeCPU_t quantPre = GetScalarPreQuantMode<typename TileData::DType, typename GlobalData::DType>();
     constexpr bool useRelu = reluPreMode == ReluPreMode::NormalRelu;
     constexpr bool atomicAdd = (atomicType == AtomicType::AtomicAdd);
